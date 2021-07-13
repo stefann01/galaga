@@ -1,0 +1,27 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  position: relative;
+}
+
+.rocket {
+  width: 10px;
+  height: 10px;
+  background-color: green;
+  position: absolute;
+}
+
+.bullet {
+  width: 10px;
+  height: 10px;
+  background-color: blue;
+  position: absolute;
+}
+
+.enemy {
+  width: 10px;
+  height: 10px;
+  background-color: pink;
+  position: absolute;
+}
