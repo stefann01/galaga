@@ -1,11 +1,11 @@
-class Enemy {
-  public static readonly enemyShootProbability = 0.3;
+class Rocket {
   constructor(
     public x: number,
     public y: number,
+    public velocity: number,
     public width: number,
     public height: number
   ) {}
 }
 
-export default Enemy;
+export default Rocket;
