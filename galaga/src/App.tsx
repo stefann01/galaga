@@ -27,9 +27,17 @@ function App() {
       )}
       {!play && (
         <div className={styles.menuContainer}>
-          <button onClick={() => setPlay(true)} className={styles.playBtn}>
-            Play
-          </button>
+          <div className={styles.buttons}>
+            <button className={styles.PlayButton} onClick={() => setPlay(true)}>
+              <h2 className={styles.buttonsText}> Play Game </h2>
+            </button>
+
+            <br />
+
+            <button className={styles.HelpButton}>
+              <h2 className={styles.buttonsText}> Help </h2>
+            </button>
+          </div>
         </div>
       )}
     </>
