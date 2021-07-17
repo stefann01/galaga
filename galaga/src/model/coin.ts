@@ -1,5 +1,4 @@
-class Enemy {
-  public static readonly enemyShootProbability = 0.4;
+class Coin {
   constructor(
     public x: number,
     public y: number,
@@ -8,4 +7,4 @@ class Enemy {
   ) {}
 }
 
-export default Enemy;
+export default Coin;

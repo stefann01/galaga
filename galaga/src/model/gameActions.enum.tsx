@@ -5,6 +5,7 @@ enum GameActions {
   MoveBullets,
   MoveEnemyBullet,
   AddEnemyBullet,
+  MoveCoins,
   AddEnemy,
 }
 

@@ -1,4 +1,5 @@
 import Bullet from "./bullet";
+import Coin from "./coin";
 import Enemy from "./enemy";
 import Rocket from "./rocket";
 
@@ -9,6 +10,9 @@ interface GameContextModel {
   enemyBullets: Bullet[];
   enemies: Enemy[];
   score: number;
+  isGameOver: boolean;
+  isOverHead: boolean;
+  coins: Coin[];
 
   dispatch: React.Dispatch<any>;
 }

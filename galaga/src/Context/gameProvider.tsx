@@ -1,5 +1,7 @@
-import React, { useContext, useReducer } from "react";
+import React, { useContext, useMemo, useReducer } from "react";
+
 import Bullet from "../model/bullet";
+import Coin from "../model/coin";
 import GameContextModel from "../model/contextModel";
 import Enemy from "../model/enemy";
 import Rocket from "../model/rocket";
@@ -22,22 +24,27 @@ export function GameProvider(props: GameContextProviderProps) {
     enemies: props.enemies,
     pressedKeys: new Set<number>(),
     score: 0,
+    isGameOver: false,
+    isOverHead: false,
+    coins: new Array<Coin>(),
   } as GameReducerState);
+  let value = useMemo(() => {
+    return {
+      rocket: state.rocket,
+      pressedKeys: state.pressedKeys,
+      bullets: state.bullets,
+      enemyBullets: state.enemyBullets,
+      enemies: state.enemies,
+      score: state.score,
+      isGameOver: state.isGameOver,
+      coins: state.coins,
+      isOverHead: state.isOverHead,
+      dispatch,
+    };
+  }, [state]);
 
   return (
-    <GameContext.Provider
-      value={{
-        rocket: state.rocket,
-        pressedKeys: state.pressedKeys,
-        bullets: state.bullets,
-        enemyBullets: state.enemyBullets,
-        enemies: state.enemies,
-        score: state.score,
-        dispatch,
-      }}
-    >
-      {props.children}
-    </GameContext.Provider>
+    <GameContext.Provider value={value}>{props.children}</GameContext.Provider>
   );
 }
 

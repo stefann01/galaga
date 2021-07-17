@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
+
 import { useGameContext } from "../../Context/gameProvider";
-import Bullet from "../../model/bullet";
 import Enemy from "../../model/enemy";
 import GameActions from "../../model/gameActions.enum";
 import styles from "./enemyBullets.module.scss";
+
 export default function EnemyBullets() {
   const { enemyBullets, dispatch } = useGameContext();
-  // console.log("Enemy Bullets render");
+  console.log("enemy bullet render");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -16,28 +17,33 @@ export default function EnemyBullets() {
     }, 500);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      dispatch({ type: GameActions.MoveEnemyBullet });
+      if (enemyBullets.length) {
+        dispatch({ type: GameActions.MoveEnemyBullet });
+      }
     }, 20);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [enemyBullets.length, dispatch]);
 
   return (
     <>
-      {enemyBullets.map((bullet, index) => (
-        <div
-          key={index}
-          className={styles.bullet}
-          style={{
-            left: bullet.x,
-            top: bullet.y,
-          }}
-        ></div>
-      ))}
+      {enemyBullets.length &&
+        enemyBullets.map((bullet, index) => (
+          <div
+            key={index}
+            className={styles.bullet}
+            style={{
+              left: bullet.x,
+              top: bullet.y,
+              width: bullet.width,
+              height: bullet.height,
+            }}
+          ></div>
+        ))}
     </>
   );
 }

@@ -2,10 +2,33 @@ import React, { useEffect } from "react";
 
 import { useGameContext } from "../Context/gameProvider";
 import GameActions from "../model/gameActions.enum";
+import Rocket from "../model/rocket";
 import styles from "./rocket.module.scss";
 
-function Rocket() {
-  const { rocket, dispatch } = useGameContext();
+interface RocketContainerProps {
+  setGameOver: (isGameOver: boolean) => void;
+}
+
+function RocketContainer({ setGameOver }: RocketContainerProps) {
+  const { isGameOver, dispatch, rocket } = useGameContext();
+
+  if (isGameOver) {
+    setGameOver(true);
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.keyCode === 32) {
+        dispatch({ type: GameActions.Shoot });
+      }
+    };
+
+    window.addEventListener("keyup", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keyup", handleKeyDown);
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     function setMousePosition(e) {
@@ -17,29 +40,19 @@ function Rocket() {
     window.addEventListener("mousemove", setMousePosition);
 
     return () => window.removeEventListener("mousemove", setMousePosition);
-  }, []);
+  }, [dispatch]);
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.keyCode === 32) {
-        console.log("Shooting");
-        dispatch({ type: GameActions.Shoot });
-      }
-    };
+  return <RocketComp rocket={rocket} />;
+}
 
-    window.addEventListener("click", handleKeyDown);
-    window.addEventListener("keydown", handleKeyDown);
+interface RocketComponentProps {
+  rocket: Rocket;
+}
+const RocketComp = React.memo(
+  function RocketComponent({ rocket }: RocketComponentProps) {
+    console.log("Rocket render");
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("click", handleKeyDown);
-    };
-  }, []);
-
-  // console.log("Rocket render");
-
-  return (
-    <>
+    return (
       <div
         className={styles.rocket}
         style={{
@@ -49,8 +62,15 @@ function Rocket() {
           height: rocket.height,
         }}
       ></div>
-    </>
-  );
-}
+    );
+  },
+  (prevProps, nextProps) => {
+    // console.log(`Prev: ${prevProps.rocket.x} <-> Next: ${nextProps.rocket.x}`);
+    if (prevProps.rocket.x === nextProps.rocket.x) {
+      return true;
+    }
+    return false;
+  }
+);
 
-export default React.memo(Rocket);
+export default RocketContainer;

@@ -4,41 +4,58 @@ import styles from "./App.module.scss";
 import Bullets from "./components/bullets/bullets";
 import Enemies from "./components/enemies/enemies";
 import EnemyBullets from "./components/enemyBullets/enemyBullets";
-import Rocket from "./components/rocket";
-import { useGameContext } from "./Context/gameProvider";
+import OverHead from "./components/overHead/overHead";
+import RocketContainer from "./components/rocket";
+import Score from "./components/score/score";
 
 function App() {
   const [play, setPlay] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
-  // console.log("App render");
-  const { score } = useGameContext();
   return (
     <>
       {play && (
         <div className={styles.container}>
-          <div>
-            <h1 style={{ color: "white" }}>Score: {score}</h1>
-          </div>
-          <Rocket />
+          <Score />
+          <RocketContainer
+            setGameOver={(isGameOver) => {
+              setGameOver(isGameOver);
+              setPlay(false);
+            }}
+          />
           <Bullets />
           <Enemies />
-          <EnemyBullets />
+          <OverHead />
+          {/* <EnemyBullets /> */}
+          {/* <Coins /> */}
         </div>
       )}
       {!play && (
-        <div className={styles.menuContainer}>
-          <div className={styles.buttons}>
-            <button className={styles.PlayButton} onClick={() => setPlay(true)}>
-              <h2 className={styles.buttonsText}> Play Game </h2>
-            </button>
+        <>
+          {gameOver ? (
+            <h1>Game Over</h1>
+          ) : (
+            <div className={styles.menuContainer}>
+              <div className={styles.buttons}>
+                <button
+                  className={styles.PlayButton}
+                  onClick={() => {
+                    setPlay(true);
+                    setGameOver(false);
+                  }}
+                >
+                  <h2 className={styles.buttonsText}> Play Game </h2>
+                </button>
 
-            <br />
+                <br />
 
-            <button className={styles.HelpButton}>
-              <h2 className={styles.buttonsText}> Help </h2>
-            </button>
-          </div>
-        </div>
+                <button className={styles.HelpButton}>
+                  <h2 className={styles.buttonsText}> Help </h2>
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </>
   );
