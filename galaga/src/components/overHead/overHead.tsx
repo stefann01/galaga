@@ -4,7 +4,11 @@ import { useGameContext } from "../../Context/gameProvider";
 import { OVERHEAD_LIMIT } from "../../Context/gameReducer";
 import styles from "./overHead.module.scss";
 
-export default function OverHead() {
+interface OverHeadProps {
+  width: number;
+}
+
+export default function OverHead({ width }: OverHeadProps) {
   const { bullets } = useGameContext();
 
   const overheadPercentage = useMemo(
@@ -12,25 +16,22 @@ export default function OverHead() {
     [bullets.length]
   );
 
+  const progressBarStyle: React.CSSProperties = {
+    width: width,
+  };
+
+  const indicatorStyles: React.CSSProperties = {
+    width: `${overheadPercentage}%`,
+  };
+
   return (
-    <div className={styles.overHeadContainer}>
-      <p
-        style={{ width: `${overheadPercentage}%` }}
-        data-value={`${overheadPercentage}`}
-      >
-        OVERHEAD
-      </p>
-      <progress
-        max="100"
-        value={`${overheadPercentage}`}
-        className={styles.html5}
-      >
-        <div className={styles.progressBar}>
-          <span style={{ width: `${overheadPercentage}%` }}>
-            {overheadPercentage}%
-          </span>
-        </div>
-      </progress>
+    <div className={styles.wrapper}>
+      <div className={styles.progressBar} style={{ ...progressBarStyle }}>
+        <div className={styles.indicator} style={{ ...indicatorStyles }}></div>
+      </div>
+      {overheadPercentage === 100 && (
+        <h1 className={styles.text}> Overhead!</h1>
+      )}
     </div>
   );
 }

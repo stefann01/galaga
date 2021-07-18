@@ -25,7 +25,7 @@ function App() {
           />
           <Bullets />
           <Enemies />
-          <OverHead />
+          <OverHead width={200} />
           {/* <EnemyBullets /> */}
           {/* <Coins /> */}
         </div>
