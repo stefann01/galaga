@@ -18,13 +18,21 @@ function RocketContainer({ setGameOver }: RocketContainerProps) {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (e.keyCode === 32) {
         dispatch({ type: GameActions.Shoot });
+      }
     };
 
-    window.addEventListener("click", handleKeyDown);
+    const handleClick = () => {
+      dispatch({ type: GameActions.Shoot });
+    };
+
+    window.addEventListener("click", handleClick);
+    window.addEventListener("keyup", handleKeyDown);
 
     return () => {
       window.removeEventListener("click", handleKeyDown);
+      window.removeEventListener("keyup", handleClick);
     };
   }, [dispatch]);
 
