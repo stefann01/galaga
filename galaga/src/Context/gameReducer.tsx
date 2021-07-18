@@ -42,7 +42,12 @@ export function gameReducer(
         bullets: !state.isOverHead
           ? [
               ...state.bullets,
-              new Bullet(state.rocket.x, state.rocket.y, 10, 10),
+              new Bullet(
+                state.rocket.x + state.rocket.width / 2 - 5, // - half of bullet size
+                state.rocket.y,
+                10,
+                10
+              ),
             ]
           : state.bullets,
         isOverHead: state.bullets.length >= OVERHEAD_LIMIT,
@@ -92,7 +97,7 @@ export function gameReducer(
         isGameOver: state.enemyBullets.find((bullet) =>
           doOverlap(
             { x: bullet.x, y: bullet.y },
-            { x: bullet.x + 45, y: bullet.y + 30 },
+            { x: bullet.x + bullet.width, y: bullet.y + bullet.height },
             { x: state.rocket.x, y: state.rocket.y },
             {
               x: state.rocket.x + state.rocket.width,
@@ -113,8 +118,8 @@ export function gameReducer(
           for (let enemy of state.enemies) {
             if (
               doOverlap(
-                { x: bullet.x + 45, y: bullet.y },
-                { x: bullet.x + 10 + 45, y: bullet.y + 30 },
+                { x: bullet.x, y: bullet.y },
+                { x: bullet.x + bullet.width, y: bullet.y + bullet.height },
                 { x: enemy.x, y: enemy.y },
                 { x: enemy.x + enemy.width, y: enemy.y + enemy.height }
               )
@@ -150,7 +155,7 @@ export function gameReducer(
           enemies: overlappings.length
             ? state.enemies.filter((enemy) => !overlappings.includes(enemy))
             : [...state.enemies],
-          score: state.score + overlappings.length,
+          score: state.score + Math.floor(overlappings.length / 2),
 
           isOverHead: state.bullets.length >= OVERHEAD_LIMIT,
         } as GameReducerState;

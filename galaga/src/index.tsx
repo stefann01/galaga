@@ -11,11 +11,11 @@ import "./index.css";
 
 function enemyGenerator() {
   const enemies: Enemy[] = [];
-  let numberOfEnemies = 10;
+  let numberOfEnemies = 5;
 
   for (let i = 1; i <= numberOfEnemies; ++i) {
     for (let j = 1; j <= numberOfEnemies; ++j) {
-      enemies.push(new Enemy(j * 30, i * 60, 30, 30));
+      enemies.push(new Enemy(j * 200, i * 60, 30, 30));
     }
   }
   return enemies;
