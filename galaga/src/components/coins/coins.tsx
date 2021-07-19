@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+
 import { useGameContext } from "../../Context/gameProvider";
 import GameActions from "../../model/gameActions.enum";
 import styles from "./coins.module.scss";
@@ -14,9 +15,7 @@ export default function Coins() {
     }, 20);
 
     return () => clearInterval(interval);
-  }, []);
-
-  console.log(coins.length);
+  }, [coins.length, dispatch]);
 
   return (
     <>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import styles from "./App.module.scss";
 import Bullets from "./components/bullets/bullets";
+import Coins from "./components/coins/coins";
 import Enemies from "./components/enemies/enemies";
 import EnemyBullets from "./components/enemyBullets/enemyBullets";
 import OverHead from "./components/overHead/overHead";
@@ -27,7 +28,7 @@ function App() {
           <Enemies />
           <OverHead width={200} />
           {/* <EnemyBullets /> */}
-          {/* <Coins /> */}
+          <Coins />
         </div>
       )}
       {!play && (
