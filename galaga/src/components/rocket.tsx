@@ -23,10 +23,16 @@ function RocketContainer({ setGameOver }: RocketContainerProps) {
       }
     };
 
+    const handleClick = () => {
+      dispatch({ type: GameActions.Shoot });
+    };
+
+    window.addEventListener("click", handleClick);
     window.addEventListener("keyup", handleKeyDown);
 
     return () => {
-      window.removeEventListener("keyup", handleKeyDown);
+      window.removeEventListener("click", handleKeyDown);
+      window.removeEventListener("keyup", handleClick);
     };
   }, [dispatch]);
 
