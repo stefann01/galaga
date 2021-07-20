@@ -20,6 +20,7 @@ export interface GameReducerState {
   isGameOver: boolean;
   isOverHead: boolean;
   coins: Coin[];
+  candies: number;
 }
 
 export function gameReducer(
@@ -71,6 +72,7 @@ export function gameReducer(
       } as GameReducerState;
 
     case GameActions.MoveCoins:
+      let overlappingCoins = 0;
       return {
         ...state,
         coins: state.coins.length
@@ -80,7 +82,23 @@ export function gameReducer(
                 return { ...coin };
               })
               .filter((coin) => coin.y < window.innerHeight)
+              .filter((coin) => {
+                const isOverlapping = doOverlap(
+                  { x: coin.x, y: coin.y },
+                  { x: coin.x + coin.width, y: coin.y + coin.height },
+                  { x: state.rocket.x, y: state.rocket.y },
+                  {
+                    x: state.rocket.x + state.rocket.width,
+                    y: state.rocket.y + state.rocket.height,
+                  }
+                );
+                if (isOverlapping) {
+                  overlappingCoins += 1;
+                }
+                return !isOverlapping;
+              })
           : state.coins,
+        candies: state.candies + overlappingCoins,
       } as GameReducerState;
 
     case GameActions.MoveEnemyBullet: {
