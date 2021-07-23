@@ -21,6 +21,7 @@ export interface GameReducerState {
   isOverHead: boolean;
   coins: Coin[];
   candies: number;
+  lives: number;
 }
 
 export function gameReducer(
@@ -56,20 +57,25 @@ export function gameReducer(
     }
 
     case GameActions.AddEnemyBullet:
-      const randomEnemyIndex = Math.floor(Math.random() * state.enemies.length);
+      if (state.enemies.length) {
+        const randomEnemyIndex = Math.floor(
+          Math.random() * state.enemies.length
+        );
 
-      return {
-        ...state,
-        enemyBullets: [
-          ...state.enemyBullets,
-          new Bullet(
-            state.enemies[randomEnemyIndex].x,
-            state.enemies[randomEnemyIndex].y,
-            10,
-            10
-          ),
-        ],
-      } as GameReducerState;
+        return {
+          ...state,
+          enemyBullets: [
+            ...state.enemyBullets,
+            new Bullet(
+              state.enemies[randomEnemyIndex].x,
+              state.enemies[randomEnemyIndex].y,
+              10,
+              10
+            ),
+          ],
+        } as GameReducerState;
+      }
+      return state;
 
     case GameActions.MoveCoins:
       let overlappingCoins = 0;
@@ -102,6 +108,17 @@ export function gameReducer(
       } as GameReducerState;
 
     case GameActions.MoveEnemyBullet: {
+      const rocketIsHit = state.enemyBullets.find((bullet) =>
+        doOverlap(
+          { x: bullet.x, y: bullet.y },
+          { x: bullet.x + bullet.width, y: bullet.y + bullet.height },
+          { x: state.rocket.x, y: state.rocket.y },
+          {
+            x: state.rocket.x + state.rocket.width,
+            y: state.rocket.y + state.rocket.height,
+          }
+        )
+      );
       return {
         ...state,
         enemyBullets: state.enemyBullets.length
@@ -111,20 +128,13 @@ export function gameReducer(
                 return { ...bullet };
               })
               .filter((bullet) => bullet.y < window.innerHeight)
+              .filter(
+                (bullet) =>
+                  !(bullet.x === rocketIsHit?.x && bullet.y === rocketIsHit?.y)
+              )
           : state.enemyBullets,
-        isGameOver: state.enemyBullets.find((bullet) =>
-          doOverlap(
-            { x: bullet.x, y: bullet.y },
-            { x: bullet.x + bullet.width, y: bullet.y + bullet.height },
-            { x: state.rocket.x, y: state.rocket.y },
-            {
-              x: state.rocket.x + state.rocket.width,
-              y: state.rocket.y + state.rocket.height,
-            }
-          )
-        )
-          ? true
-          : state.isGameOver,
+        isGameOver: state.lives === 0,
+        lives: rocketIsHit ? state.lives - 1 : state.lives,
       } as GameReducerState;
     }
 

@@ -28,6 +28,7 @@ export function GameProvider(props: GameContextProviderProps) {
     isOverHead: false,
     coins: new Array<Coin>(),
     candies: 0
+    lives: 10,
   } as GameReducerState);
   let value = useMemo(() => {
     return {
@@ -41,6 +42,7 @@ export function GameProvider(props: GameContextProviderProps) {
       coins: state.coins,
       isOverHead: state.isOverHead,
       candies: state.candies,
+      lives: state.lives,
       dispatch,
     };
   }, [state]);

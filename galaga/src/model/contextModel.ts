@@ -15,6 +15,7 @@ interface GameContextModel {
   coins: Coin[];
   candies: number;
 
+  lives: number;
   dispatch: React.Dispatch<any>;
 }
 
