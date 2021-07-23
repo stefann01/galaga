@@ -17,7 +17,7 @@ export default function OverHead({ width }: OverHeadProps) {
   );
 
   const progressBarStyle: React.CSSProperties = {
-    width: width,
+    width,
   };
 
   const indicatorStyles: React.CSSProperties = {
@@ -26,12 +26,12 @@ export default function OverHead({ width }: OverHeadProps) {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.progressBar} style={{ ...progressBarStyle }}>
-        <div className={styles.indicator} style={{ ...indicatorStyles }}></div>
-      </div>
       {overheadPercentage === 100 && (
         <h1 className={styles.text}> Overhead!</h1>
       )}
+      <div className={styles.progressBar} style={{ ...progressBarStyle }}>
+        <div className={styles.indicator} style={{ ...indicatorStyles }}></div>
+      </div>
     </div>
   );
 }

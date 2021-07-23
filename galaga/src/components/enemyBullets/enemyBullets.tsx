@@ -24,7 +24,7 @@ export default function EnemyBullets() {
       if (enemyBullets.length) {
         dispatch({ type: GameActions.MoveEnemyBullet });
       }
-    }, 20);
+    }, 15);
 
     return () => clearInterval(interval);
   }, [enemyBullets.length, dispatch]);

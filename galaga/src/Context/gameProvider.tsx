@@ -27,7 +27,7 @@ export function GameProvider(props: GameContextProviderProps) {
     isGameOver: false,
     isOverHead: false,
     coins: new Array<Coin>(),
-    candies: 0
+    candies: 0,
     lives: 10,
   } as GameReducerState);
   let value = useMemo(() => {

@@ -14,7 +14,7 @@ function Bullets() {
       if (bullets.length > 0) {
         dispatch({ type: GameActions.MoveBullets });
       }
-    }, 20);
+    }, 10);
 
     return () => clearInterval(interval);
   }, [bullets.length, dispatch]);

@@ -5,7 +5,6 @@ import Bullets from "./components/bullets/bullets";
 import Coins from "./components/coins/coins";
 import Enemies from "./components/enemies/enemies";
 import EnemyBullets from "./components/enemyBullets/enemyBullets";
-import OverHead from "./components/overHead/overHead";
 import RocketContainer from "./components/rocket";
 import Score from "./components/score/score";
 
@@ -26,7 +25,6 @@ function App() {
           />
           <Bullets />
           <Enemies />
-          <OverHead width={200} />
           <EnemyBullets />
           <Coins />
         </div>
