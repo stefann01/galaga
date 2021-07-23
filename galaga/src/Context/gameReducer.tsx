@@ -20,6 +20,7 @@ export interface GameReducerState {
   isGameOver: boolean;
   isOverHead: boolean;
   coins: Coin[];
+  candies: number;
 }
 
 export function gameReducer(
@@ -70,18 +71,35 @@ export function gameReducer(
         ],
       } as GameReducerState;
 
-    case GameActions.MoveCoins: {
-      const newState = { ...state };
-      if (newState.coins.length) {
-        newState.coins = newState.coins
-          .map((coin) => {
-            coin.y += 1;
-            return coin;
-          })
-          .filter((coin) => coin.y < window.innerHeight);
-      }
-      return newState;
-    }
+    case GameActions.MoveCoins:
+      let overlappingCoins = 0;
+      return {
+        ...state,
+        coins: state.coins.length
+          ? state.coins
+              .map((coin) => {
+                coin.y += 1;
+                return { ...coin };
+              })
+              .filter((coin) => coin.y < window.innerHeight)
+              .filter((coin) => {
+                const isOverlapping = doOverlap(
+                  { x: coin.x, y: coin.y },
+                  { x: coin.x + coin.width, y: coin.y + coin.height },
+                  { x: state.rocket.x, y: state.rocket.y },
+                  {
+                    x: state.rocket.x + state.rocket.width,
+                    y: state.rocket.y + state.rocket.height,
+                  }
+                );
+                if (isOverlapping) {
+                  overlappingCoins += 1;
+                }
+                return !isOverlapping;
+              })
+          : state.coins,
+        candies: state.candies + overlappingCoins,
+      } as GameReducerState;
 
     case GameActions.MoveEnemyBullet: {
       return {
@@ -113,7 +131,7 @@ export function gameReducer(
     case GameActions.MoveBullets: {
       if (state.bullets.length) {
         let overlappings: (Bullet | Enemy)[] = [];
-        let newCoins = new Array<Coin>();
+        let newCoins = [...state.coins];
         for (let bullet of state.bullets) {
           for (let enemy of state.enemies) {
             if (
@@ -126,8 +144,7 @@ export function gameReducer(
             ) {
               overlappings = [...overlappings, enemy];
               overlappings = [...overlappings, bullet];
-              const random = Math.random();
-              if (random < 0.2) {
+              if (Math.random() <= Coin.coinDropProbability) {
                 newCoins = [...newCoins, new Coin(enemy.x, enemy.y, 20, 30)];
               }
             }

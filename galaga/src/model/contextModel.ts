@@ -13,6 +13,7 @@ interface GameContextModel {
   isGameOver: boolean;
   isOverHead: boolean;
   coins: Coin[];
+  candies: number;
 
   dispatch: React.Dispatch<any>;
 }
