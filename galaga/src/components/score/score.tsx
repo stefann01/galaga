@@ -10,13 +10,14 @@ export default function Score() {
   return (
     <div className={styles.container}>
       <div className={styles.livesDisplayer}>
-        {[...Array(lives)].map((index) => {
-          return (
-            <div className={styles.life}>
-              <img src={RocketLife} alt={`life${index}`} />
-            </div>
-          );
-        })}
+        {lives > 0 &&
+          [...Array(lives)].map((index) => {
+            return (
+              <div className={styles.life}>
+                <img src={RocketLife} alt={`life${index}`} />
+              </div>
+            );
+          })}
 
         <p className={styles.text}>Candies:</p>
         <p className={styles.text}>{candies}</p>

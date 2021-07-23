@@ -4,7 +4,7 @@ import Enemy from "../model/enemy";
 import GameActions from "../model/gameActions.enum";
 import Rocket from "../model/rocket";
 
-export const OVERHEAD_LIMIT = 5;
+export const OVERHEAD_LIMIT = 10;
 
 export default class Action<T, P> {
   constructor(public type: T, public payload: P) {}
