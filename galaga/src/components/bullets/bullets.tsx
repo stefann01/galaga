@@ -7,7 +7,7 @@ import styles from "./bullets.module.scss";
 function Bullets() {
   const { bullets, dispatch } = useGameContext();
 
-  console.log("bullets render");
+  // console.log("bullets render");
 
   useEffect(() => {
     const interval = setInterval(() => {

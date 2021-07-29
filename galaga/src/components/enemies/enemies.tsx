@@ -1,6 +1,6 @@
 import React from "react";
 
-import Alien from "../../assets/icons/ari_alien.svg";
+import Alien from "../../assets/images/Monstruletplm.svg";
 import { useGameContext } from "../../Context/gameProvider";
 import styles from "./enemies.module.scss";
 
@@ -12,7 +12,7 @@ export default function Enemies() {
 
 const EnemiesComp = React.memo(
   ({ enemies }: any) => {
-    // console.log("Enemies render");
+    console.log("Enemies render");
     return (
       <>
         {enemies.map((enemy, index) => (

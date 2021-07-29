@@ -56,7 +56,7 @@ interface RocketComponentProps {
 }
 const RocketComp = React.memo(
   function RocketComponent({ rocket }: RocketComponentProps) {
-    console.log("Rocket render");
+    // console.log("Rocket render");
 
     return (
       <div

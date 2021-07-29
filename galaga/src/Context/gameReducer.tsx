@@ -47,8 +47,8 @@ export function gameReducer(
               new Bullet(
                 state.rocket.x + state.rocket.width / 2 - 5, // - half of bullet size
                 state.rocket.y,
-                10,
-                10
+                20,
+                30
               ),
             ]
           : state.bullets,
@@ -69,8 +69,8 @@ export function gameReducer(
             new Bullet(
               state.enemies[randomEnemyIndex].x,
               state.enemies[randomEnemyIndex].y,
-              10,
-              10
+              20,
+              40
             ),
           ],
         } as GameReducerState;

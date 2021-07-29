@@ -7,7 +7,7 @@ import styles from "./enemyBullets.module.scss";
 
 export default function EnemyBullets() {
   const { enemyBullets, dispatch } = useGameContext();
-  console.log("enemy bullet render");
+  // console.log("enemy bullet render");
 
   useEffect(() => {
     const interval = setInterval(() => {

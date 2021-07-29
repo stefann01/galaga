@@ -1,5 +1,5 @@
 class Enemy {
-  public static readonly enemyShootProbability = 1;
+  public static readonly enemyShootProbability = 0;
   constructor(
     public x: number,
     public y: number,

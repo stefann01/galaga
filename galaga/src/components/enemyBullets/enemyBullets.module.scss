@@ -1,7 +1,7 @@
 .bullet {
-  background-color: red;
-  // border-radius: 50%;
+  background: url("../../assets//icons/EnemyBullet.svg") no-repeat;
+  background-repeat: no-repeat;
+  background-size: contain;
   position: absolute;
-  box-shadow: 0px 5px 5px 1px red;
-  border: 1px solid white;
+  transform: rotate(180deg);
 }

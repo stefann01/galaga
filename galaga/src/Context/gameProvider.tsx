@@ -45,7 +45,7 @@ export function GameProvider(props: GameContextProviderProps) {
       lives: state.lives,
       dispatch,
     };
-  }, [state]);
+  }, [state, state.enemies]);
 
   return (
     <GameContext.Provider value={value}>{props.children}</GameContext.Provider>

@@ -14,8 +14,8 @@ function enemyGenerator() {
   let numberOfEnemies = 5;
 
   for (let i = 1; i <= numberOfEnemies; ++i) {
-    for (let j = 1; j <= numberOfEnemies; ++j) {
-      enemies.push(new Enemy(j * 200, i * 60, 30, 30));
+    for (let j = 1; j <= numberOfEnemies * 2; ++j) {
+      enemies.push(new Enemy(j * 200, i * 80, 50, 50));
     }
   }
   return enemies;
