@@ -1,12 +1,15 @@
 import React, { useEffect } from "react";
 
-import { useGameContext } from "../../Context/gameProvider";
+import Action from "../../Context/gameReducer";
+import Bullet from "../../model/bullet";
 import GameActions from "../../model/gameActions.enum";
 import styles from "./bullets.module.scss";
 
-function Bullets() {
-  const { bullets, dispatch } = useGameContext();
-
+interface BulletsProps {
+  bullets: Bullet[];
+  dispatch: React.Dispatch<Action<GameActions, any>>;
+}
+function BulletsComponent({ bullets, dispatch }: BulletsProps) {
   // console.log("bullets render");
 
   useEffect(() => {
@@ -38,4 +41,4 @@ function Bullets() {
   );
 }
 
-export default React.memo(Bullets);
+export default React.memo(BulletsComponent);

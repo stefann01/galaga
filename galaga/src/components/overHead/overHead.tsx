@@ -1,21 +1,13 @@
-import React, { useMemo } from "react";
+import React from "react";
 
-import { useGameContext } from "../../Context/gameProvider";
-import { OVERHEAD_LIMIT } from "../../Context/gameReducer";
 import styles from "./overHead.module.scss";
 
 interface OverHeadProps {
   width: number;
+  overheadPercentage: number;
 }
 
-export default function OverHead({ width }: OverHeadProps) {
-  const { bullets } = useGameContext();
-
-  const overheadPercentage = useMemo(
-    () => (bullets.length / OVERHEAD_LIMIT) * 100,
-    [bullets.length]
-  );
-
+export default function OverHead({ width, overheadPercentage }: OverHeadProps) {
   const progressBarStyle: React.CSSProperties = {
     width,
   };

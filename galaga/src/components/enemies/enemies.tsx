@@ -1,17 +1,15 @@
 import React from "react";
 
 import Alien from "../../assets/images/Monstruletplm.svg";
-import { useGameContext } from "../../Context/gameProvider";
+import Enemy from "../../model/enemy";
 import styles from "./enemies.module.scss";
 
-export default function Enemies() {
-  const { enemies } = useGameContext();
-
-  return <EnemiesComp enemies={enemies} />;
+interface EnemiesProps {
+  enemies: Enemy[];
 }
 
-const EnemiesComp = React.memo(
-  ({ enemies }: any) => {
+const Enemies = React.memo(
+  ({ enemies }: EnemiesProps) => {
     console.log("Enemies render");
     return (
       <>
@@ -33,9 +31,13 @@ const EnemiesComp = React.memo(
     );
   },
   (prevProps, nextProps) => {
-    if (prevProps.enemies.length === nextProps.enemies.length) {
+    if (
+      JSON.stringify(prevProps.enemies) === JSON.stringify(nextProps.enemies)
+    ) {
       return true;
     }
     return false;
   }
 );
+
+export default Enemies;

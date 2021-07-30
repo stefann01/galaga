@@ -8,7 +8,6 @@ interface GameContextModel {
   pressedKeys: Set<number>;
   bullets: Bullet[];
   enemyBullets: Bullet[];
-  enemies: Enemy[];
   score: number;
   isGameOver: boolean;
   isOverHead: boolean;

@@ -1,12 +1,15 @@
 import React, { useEffect } from "react";
 
-import { useGameContext } from "../../Context/gameProvider";
+import Action from "../../Context/gameReducer";
+import Coin from "../../model/coin";
 import GameActions from "../../model/gameActions.enum";
 import styles from "./coins.module.scss";
 
-export default function Coins() {
-  const { coins, dispatch } = useGameContext();
-
+interface CoinsProps {
+  coins: Coin[];
+  dispatch: React.Dispatch<Action<GameActions, any>>;
+}
+function Coins({ coins, dispatch }: CoinsProps) {
   useEffect(() => {
     const interval = setInterval(() => {
       if (coins.length) {
@@ -34,3 +37,5 @@ export default function Coins() {
     </>
   );
 }
+
+export default React.memo(Coins);

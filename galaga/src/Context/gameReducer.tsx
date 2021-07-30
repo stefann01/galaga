@@ -7,7 +7,7 @@ import Rocket from "../model/rocket";
 export const OVERHEAD_LIMIT = 10;
 
 export default class Action<T, P> {
-  constructor(public type: T, public payload: P) {}
+  constructor(public type: T, public payload?: P) {}
 }
 
 export interface GameReducerState {
@@ -143,7 +143,11 @@ export function gameReducer(
         let overlappings: (Bullet | Enemy)[] = [];
         let newCoins = [...state.coins];
         for (let bullet of state.bullets) {
-          for (let enemy of state.enemies) {
+          for (let enemy of state.enemies.filter(
+            (e) =>
+              (bullet.x <= e.x + e.width && bullet.x >= e.x) ||
+              (e.x >= bullet.x && e.x <= bullet.x + bullet.width)
+          )) {
             if (
               doOverlap(
                 { x: bullet.x, y: bullet.y },

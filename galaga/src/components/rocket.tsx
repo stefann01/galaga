@@ -1,62 +1,47 @@
 import React, { useEffect } from "react";
 
-import { useGameContext } from "../Context/gameProvider";
+import Action from "../Context/gameReducer";
 import GameActions from "../model/gameActions.enum";
 import Rocket from "../model/rocket";
 import styles from "./rocket.module.scss";
 
-interface RocketContainerProps {
-  setGameOver: (isGameOver: boolean) => void;
-}
-
-function RocketContainer({ setGameOver }: RocketContainerProps) {
-  const { isGameOver, dispatch, rocket } = useGameContext();
-
-  if (isGameOver) {
-    setGameOver(true);
-  }
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.keyCode === 32) {
-        dispatch({ type: GameActions.Shoot });
-      }
-    };
-
-    const handleClick = () => {
-      dispatch({ type: GameActions.Shoot });
-    };
-
-    window.addEventListener("click", handleClick);
-    window.addEventListener("keyup", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("click", handleKeyDown);
-      window.removeEventListener("keyup", handleClick);
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    function setMousePosition(e) {
-      dispatch({
-        type: GameActions.Move,
-        payload: { x: e.clientX, y: e.clientY },
-      });
-    }
-    window.addEventListener("mousemove", setMousePosition);
-
-    return () => window.removeEventListener("mousemove", setMousePosition);
-  }, [dispatch]);
-
-  return <RocketComp rocket={rocket} />;
-}
-
 interface RocketComponentProps {
   rocket: Rocket;
+  dispatch: React.Dispatch<Action<GameActions, any>>;
 }
 const RocketComp = React.memo(
-  function RocketComponent({ rocket }: RocketComponentProps) {
-    // console.log("Rocket render");
+  function RocketComponent({ rocket, dispatch }: RocketComponentProps) {
+    useEffect(() => {
+      function setMousePosition(e) {
+        dispatch({
+          type: GameActions.Move,
+          payload: { x: e.clientX, y: e.clientY },
+        });
+      }
+      window.addEventListener("mousemove", setMousePosition);
+
+      return () => window.removeEventListener("mousemove", setMousePosition);
+    }, [dispatch]);
+
+    useEffect(() => {
+      const handleKeyDown = (e) => {
+        if (e.keyCode === 32) {
+          dispatch({ type: GameActions.Shoot });
+        }
+      };
+
+      const handleClick = () => {
+        dispatch({ type: GameActions.Shoot });
+      };
+
+      window.addEventListener("click", handleClick);
+      window.addEventListener("keyup", handleKeyDown);
+
+      return () => {
+        window.removeEventListener("click", handleKeyDown);
+        window.removeEventListener("keyup", handleClick);
+      };
+    }, [dispatch]);
 
     return (
       <div
@@ -71,7 +56,6 @@ const RocketComp = React.memo(
     );
   },
   (prevProps, nextProps) => {
-    // console.log(`Prev: ${prevProps.rocket.x} <-> Next: ${nextProps.rocket.x}`);
     if (prevProps.rocket.x === nextProps.rocket.x) {
       return true;
     }
@@ -79,4 +63,4 @@ const RocketComp = React.memo(
   }
 );
 
-export default RocketContainer;
+export default RocketComp;
