@@ -7,20 +7,46 @@ import Enemies from "./components/enemies/enemies";
 import EnemyBullets from "./components/enemyBullets/enemyBullets";
 import RocketComp from "./components/rocket";
 import Score from "./components/score/score";
-import { gameReducer, GameReducerState, OVERHEAD_LIMIT } from "./Context/gameReducer";
+import {
+  gameReducer,
+  GameReducerState,
+  OVERHEAD_LIMIT,
+} from "./Context/gameReducer";
 import Coin from "./model/coin";
 import Enemy from "./model/enemy";
 import Rocket from "./model/rocket";
 
-function enemyGenerator() {
+function getLine(numberOfEnemies: number, enemySize: number, yOfLine: number) {
   const enemies: Enemy[] = [];
-  let numberOfEnemies = 5;
 
-  for (let i = 1; i <= numberOfEnemies; ++i) {
-    for (let j = 1; j <= numberOfEnemies * 2; ++j) {
-      enemies.push(new Enemy(j * 200, i * 80, 50, 50));
-    }
+  const marginDistanceWidth = 100;
+  const canvasLeftMargin = marginDistanceWidth;
+  const canvasRightMargin = window.innerWidth - marginDistanceWidth;
+  const canvasDistance = canvasRightMargin - canvasLeftMargin;
+  const spaceBetweenAliens = canvasDistance / (numberOfEnemies - 1);
+
+  let current = canvasLeftMargin;
+  for (let i = 0; i < numberOfEnemies; i++) {
+    enemies.push(
+      new Enemy(current - enemySize / 2, yOfLine, enemySize, enemySize)
+    );
+    current += spaceBetweenAliens;
   }
+
+  return enemies;
+}
+
+function enemyGenerator() {
+  let enemies: Enemy[] = [];
+
+  const enemySize = (4 / 100) * window.innerWidth;
+
+  enemies = [
+    ...getLine(10, enemySize, 100),
+    ...getLine(10, enemySize, 100 + enemySize + 20),
+    ...getLine(10, enemySize, 100 + 2 * (enemySize + 20)),
+  ];
+
   return enemies;
 }
 

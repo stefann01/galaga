@@ -35,7 +35,7 @@ function EnemyBullets({ enemyBullets, dispatch }: EnemyBulletsProps) {
 
   return (
     <>
-      {enemyBullets.length &&
+      {enemyBullets.length > 0 &&
         enemyBullets.map((bullet, index) => (
           <div
             key={index}
