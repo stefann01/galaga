@@ -1,6 +1,6 @@
 import React from "react";
 
-import Alien from "../../assets/images/Monstruletplm.svg";
+import Alien from "../../assets/icons/Monstrulet2.2.svg";
 import Enemy from "../../model/enemy";
 import styles from "./enemies.module.scss";
 

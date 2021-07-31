@@ -1,4 +1,5 @@
-import { useReducer, useState } from "react";
+import { Howl } from "howler";
+import { useEffect, useMemo, useReducer, useState } from "react";
 
 import styles from "./App.module.scss";
 import BulletsComponent from "./components/bullets/bullets";
@@ -16,10 +17,14 @@ import Coin from "./model/coin";
 import Enemy from "./model/enemy";
 import Rocket from "./model/rocket";
 
-function getLine(numberOfEnemies: number, enemySize: number, yOfLine: number) {
+function getLine(
+  numberOfEnemies: number,
+  enemySize: number,
+  yOfLine: number,
+  marginDistanceWidth: number = 200
+) {
   const enemies: Enemy[] = [];
 
-  const marginDistanceWidth = 100;
   const canvasLeftMargin = marginDistanceWidth;
   const canvasRightMargin = window.innerWidth - marginDistanceWidth;
   const canvasDistance = canvasRightMargin - canvasLeftMargin;
@@ -39,12 +44,12 @@ function getLine(numberOfEnemies: number, enemySize: number, yOfLine: number) {
 function enemyGenerator() {
   let enemies: Enemy[] = [];
 
-  const enemySize = (4 / 100) * window.innerWidth;
+  const enemySize = (3 / 100) * window.innerWidth;
 
   enemies = [
-    ...getLine(10, enemySize, 100),
-    ...getLine(10, enemySize, 100 + enemySize + 20),
-    ...getLine(10, enemySize, 100 + 2 * (enemySize + 20)),
+    ...getLine(11, enemySize, 100, 200),
+    ...getLine(12, enemySize, 100 + enemySize + 20, 125),
+    ...getLine(11, enemySize, 100 + 2 * (enemySize + 20), 200),
   ];
 
   return enemies;
@@ -53,13 +58,21 @@ function enemyGenerator() {
 function App() {
   const [play, setPlay] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const sound = useMemo(
+    () =>
+      new Howl({
+        src: "https://soundbible.com/mp3/Laser%20Blasts-SoundBible.com-108608437.mp3",
+        html5: true,
+        volume: 0.15,
+      }),
+    []
+  );
   const [state, dispatch] = useReducer(gameReducer, {
     rocket: new Rocket(
       window.innerWidth / 2,
       window.innerHeight - 150,
-      1,
-      100,
-      150
+      150,
+      200
     ),
     bullets: [],
     enemyBullets: [],
@@ -70,8 +83,16 @@ function App() {
     isOverHead: false,
     coins: new Array<Coin>(),
     candies: 0,
-    lives: 10,
+    lives: 5,
+    sound: sound,
   } as GameReducerState);
+
+  useEffect(() => {
+    if (state.isGameOver) {
+      setGameOver(true);
+      setPlay(false);
+    }
+  }, [state.isGameOver]);
 
   return (
     <>
@@ -82,15 +103,9 @@ function App() {
             score={state.score}
             candies={state.candies}
             overheadPercentage={(state.bullets.length / OVERHEAD_LIMIT) * 100}
+            enemiesNumber={state.enemies.length}
           />
-          <RocketComp
-            // setGameOver={(isGameOver) => {
-            //   setGameOver(isGameOver);
-            //   setPlay(false);
-            // }}
-            dispatch={dispatch}
-            rocket={state.rocket}
-          />
+          <RocketComp dispatch={dispatch} rocket={state.rocket} />
           <BulletsComponent bullets={state.bullets} dispatch={dispatch} />
           <Enemies enemies={state.enemies} />
           <EnemyBullets enemyBullets={state.enemyBullets} dispatch={dispatch} />

@@ -28,6 +28,9 @@ const RocketComp = React.memo(
         if (e.keyCode === 32) {
           dispatch({ type: GameActions.Shoot });
         }
+        if (e.keyCode === 66) {
+          dispatch({ type: GameActions.BuyLives });
+        }
       };
 
       const handleClick = () => {

@@ -17,7 +17,7 @@ function BulletsComponent({ bullets, dispatch }: BulletsProps) {
       if (bullets.length > 0) {
         dispatch({ type: GameActions.MoveBullets });
       }
-    }, 10);
+    }, 5);
 
     return () => clearInterval(interval);
   }, [bullets.length, dispatch]);
@@ -25,18 +25,20 @@ function BulletsComponent({ bullets, dispatch }: BulletsProps) {
   return (
     <>
       {bullets.length > 0 &&
-        bullets.map((bullet, index) => (
-          <div
-            key={index}
-            className={styles.bullet}
-            style={{
-              left: bullet.x,
-              top: bullet.y,
-              width: bullet.width,
-              height: bullet.height,
-            }}
-          ></div>
-        ))}
+        bullets.map((bullet, index) => {
+          return (
+            <div
+              key={index}
+              className={styles.bullet}
+              style={{
+                left: bullet.x,
+                top: bullet.y,
+                width: bullet.width,
+                height: bullet.height,
+              }}
+            ></div>
+          );
+        })}
     </>
   );
 }

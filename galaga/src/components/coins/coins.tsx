@@ -15,7 +15,7 @@ function Coins({ coins, dispatch }: CoinsProps) {
       if (coins.length) {
         dispatch({ type: GameActions.MoveCoins });
       }
-    }, 20);
+    }, 10);
 
     return () => clearInterval(interval);
   }, [coins.length, dispatch]);
