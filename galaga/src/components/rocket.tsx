@@ -26,10 +26,16 @@ const RocketComp = React.memo(
     useEffect(() => {
       const handleKeyDown = (e) => {
         if (e.keyCode === 32) {
+          //space
           dispatch({ type: GameActions.Shoot });
         }
         if (e.keyCode === 66) {
+          //b
           dispatch({ type: GameActions.BuyLives });
+        }
+        if (e.keyCode === 70) {
+          //f
+          dispatch({ type: GameActions.IncreaseRocketPower });
         }
       };
 

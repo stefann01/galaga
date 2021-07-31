@@ -13,6 +13,7 @@ interface ScoreProps {
   score: number;
   overheadPercentage: number;
   enemiesNumber: number;
+  rocketPower: number;
 }
 
 const Score = React.memo(
@@ -22,6 +23,7 @@ const Score = React.memo(
     score,
     overheadPercentage,
     enemiesNumber,
+    rocketPower,
   }: ScoreProps) {
     return (
       <div className={styles.container}>
@@ -35,10 +37,14 @@ const Score = React.memo(
             <img src={Alien} alt="enemy" />
             <p className={styles.text}>:{enemiesNumber}</p>
           </div>
+
+          <div className={styles.leftDisplayerItem}>
+            <p>Power: {rocketPower}</p>
+          </div>
         </div>
 
         <div className={styles.overheadContainer}>
-          <OverHead width={200} overheadPercentage={overheadPercentage} />
+          <OverHead width={382} overheadPercentage={overheadPercentage} />
         </div>
 
         <div className={styles.rightDisplayer}>

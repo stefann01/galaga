@@ -19,7 +19,7 @@ export default function OverHead({ width, overheadPercentage }: OverHeadProps) {
   return (
     <div className={styles.wrapper}>
       {overheadPercentage === 100 && (
-        <h1 className={styles.text}> Overhead!</h1>
+        <h1 className={styles.text}> Overheat!</h1>
       )}
       <div className={styles.progressBar} style={{ ...progressBarStyle }}>
         <div className={styles.indicator} style={{ ...indicatorStyles }}></div>

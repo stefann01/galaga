@@ -104,6 +104,7 @@ function App() {
             candies={state.candies}
             overheadPercentage={(state.bullets.length / OVERHEAD_LIMIT) * 100}
             enemiesNumber={state.enemies.length}
+            rocketPower={state.rocket.power}
           />
           <RocketComp dispatch={dispatch} rocket={state.rocket} />
           <BulletsComponent bullets={state.bullets} dispatch={dispatch} />

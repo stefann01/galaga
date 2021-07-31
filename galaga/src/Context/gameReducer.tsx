@@ -43,6 +43,22 @@ export function gameReducer(
         },
       };
 
+    case GameActions.IncreaseRocketPower:
+      return {
+        ...state,
+        rocket:
+          state.candies > Coin.powerIncreasePrice
+            ? {
+                ...state.rocket,
+                power: state.rocket.power + 1,
+              }
+            : state.rocket,
+        candies:
+          state.candies > Coin.powerIncreasePrice
+            ? state.candies - Coin.powerIncreasePrice
+            : state.candies,
+      } as GameReducerState;
+
     case GameActions.BuyLives:
       if (state.candies >= LIFE_PRICE && state.lives < MAXIMUM_LIVES_POSSIBLE) {
         return {
@@ -65,7 +81,7 @@ export function gameReducer(
               new Bullet(
                 state.rocket.x +
                   state.rocket.width / 2 -
-                  Bullet.bulletWidth / 2, // - half of bullet size
+                  Bullet.bulletWidth / 2,
                 state.rocket.y
               ),
             ]
@@ -174,7 +190,7 @@ export function gameReducer(
               overlappings = [...overlappings, bullet];
               if (
                 Math.random() <= Coin.coinDropProbability &&
-                enemy.lifePoints === 1
+                enemy.lifePoints <= state.rocket.power
               ) {
                 newCoins = [...newCoins, new Coin(enemy.x, enemy.y)];
               }
@@ -203,9 +219,11 @@ export function gameReducer(
           enemies: overlappings.length
             ? state.enemies
                 .map((enemy) => {
-                  debugger;
                   if (overlappings.includes(enemy)) {
-                    return { ...enemy, lifePoints: enemy.lifePoints - 1 };
+                    return {
+                      ...enemy,
+                      lifePoints: enemy.lifePoints - state.rocket.power,
+                    };
                   }
                   return enemy;
                 })
