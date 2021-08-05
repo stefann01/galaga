@@ -2,6 +2,7 @@ import { Howl } from "howler";
 import { useEffect, useMemo, useReducer, useState } from "react";
 
 import styles from "./App.module.scss";
+import BackgroundVideo from "./assets/videos/backgroundv2.mp4";
 import BulletsComponent from "./components/bullets/bullets";
 import Coins from "./components/coins/coins";
 import Enemies from "./components/enemies/enemies";
@@ -97,20 +98,39 @@ function App() {
   return (
     <>
       {play && (
-        <div className={styles.container}>
-          <Score
-            lives={state.lives}
-            score={state.score}
-            candies={state.candies}
-            overheadPercentage={(state.bullets.length / OVERHEAD_LIMIT) * 100}
-            enemiesNumber={state.enemies.length}
-            rocketPower={state.rocket.power}
-          />
-          <RocketComp dispatch={dispatch} rocket={state.rocket} />
-          <BulletsComponent bullets={state.bullets} dispatch={dispatch} />
-          <Enemies enemies={state.enemies} />
-          <EnemyBullets enemyBullets={state.enemyBullets} dispatch={dispatch} />
-          <Coins coins={state.coins} dispatch={dispatch} />
+        <div style={{ position: "relative" }}>
+          <video
+            autoPlay
+            muted
+            loop
+            style={{
+              position: "fixed",
+              right: "0",
+              bottom: "0",
+              minWidth: "100%",
+              maxWidth: "100%",
+            }}
+          >
+            <source src={BackgroundVideo} type="video/mp4" />
+          </video>
+          <div className={styles.container}>
+            <Score
+              lives={state.lives}
+              score={state.score}
+              candies={state.candies}
+              overheadPercentage={(state.bullets.length / OVERHEAD_LIMIT) * 100}
+              enemiesNumber={state.enemies.length}
+              rocketPower={state.rocket.power}
+            />
+            <RocketComp dispatch={dispatch} rocket={state.rocket} />
+            <BulletsComponent bullets={state.bullets} dispatch={dispatch} />
+            <Enemies enemies={state.enemies} />
+            <EnemyBullets
+              enemyBullets={state.enemyBullets}
+              dispatch={dispatch}
+            />
+            <Coins coins={state.coins} dispatch={dispatch} />
+          </div>
         </div>
       )}
       {!play && (

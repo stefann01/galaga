@@ -25,7 +25,7 @@ function Coins({ coins, dispatch }: CoinsProps) {
       {coins.map((coin, index) => (
         <div
           key={index}
-          className={styles.coin}
+          className={coin.isSpecial ? styles.specialCoin : styles.coin}
           style={{
             left: coin.x,
             top: coin.y,

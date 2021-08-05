@@ -1,6 +1,6 @@
 class Enemy {
   public static readonly enemyShootProbability = 0.2;
-  public static readonly defaultEnemyLife = 10;
+  public static readonly defaultEnemyLife = 1;
   constructor(
     public x: number,
     public y: number,

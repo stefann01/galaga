@@ -113,6 +113,7 @@ export function gameReducer(
 
     case GameActions.MoveCoins:
       let overlappingCoins = 0;
+      let specialCandyCollision = false;
       return {
         ...state,
         coins: state.coins.length
@@ -134,11 +135,17 @@ export function gameReducer(
                 );
                 if (isOverlapping) {
                   overlappingCoins += 1;
+                  if (coin.isSpecial) {
+                    specialCandyCollision = true;
+                  }
                 }
                 return !isOverlapping;
               })
           : state.coins,
         candies: state.candies + overlappingCoins,
+        rocket: specialCandyCollision
+          ? { ...state.rocket, power: state.rocket.power + 1 }
+          : state.rocket,
       } as GameReducerState;
 
     case GameActions.MoveEnemyBullet: {
@@ -188,11 +195,18 @@ export function gameReducer(
             ) {
               overlappings = [...overlappings, enemy];
               overlappings = [...overlappings, bullet];
-              if (
-                Math.random() <= Coin.coinDropProbability &&
-                enemy.lifePoints <= state.rocket.power
-              ) {
-                newCoins = [...newCoins, new Coin(enemy.x, enemy.y)];
+
+              if (state.enemies.length === 1) {
+                const newCoin = new Coin(enemy.x, enemy.y);
+                newCoin.isSpecial = true;
+                newCoins = [...newCoins, newCoin];
+              } else {
+                if (
+                  Math.random() <= Coin.coinDropProbability &&
+                  enemy.lifePoints <= state.rocket.power
+                ) {
+                  newCoins = [...newCoins, new Coin(enemy.x, enemy.y)];
+                }
               }
             }
           }
