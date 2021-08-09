@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
 
-import { useGameContext } from "../../Context/gameProvider";
+import Action from "../../Context/gameReducer";
+import Bullet from "../../model/bullet";
 import Enemy from "../../model/enemy";
 import GameActions from "../../model/gameActions.enum";
 import styles from "./enemyBullets.module.scss";
 
-export default function EnemyBullets() {
-  const { enemyBullets, dispatch } = useGameContext();
+interface EnemyBulletsProps {
+  dispatch: React.Dispatch<Action<GameActions, any>>;
+  enemyBullets: Bullet[];
+}
+function EnemyBullets({ enemyBullets, dispatch }: EnemyBulletsProps) {
   // console.log("enemy bullet render");
 
   useEffect(() => {
@@ -24,14 +28,14 @@ export default function EnemyBullets() {
       if (enemyBullets.length) {
         dispatch({ type: GameActions.MoveEnemyBullet });
       }
-    }, 15);
+    }, 10);
 
     return () => clearInterval(interval);
   }, [enemyBullets.length, dispatch]);
 
   return (
     <>
-      {enemyBullets.length &&
+      {enemyBullets.length > 0 &&
         enemyBullets.map((bullet, index) => (
           <div
             key={index}
@@ -47,3 +51,5 @@ export default function EnemyBullets() {
     </>
   );
 }
+
+export default React.memo(EnemyBullets);

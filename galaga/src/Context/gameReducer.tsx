@@ -1,13 +1,16 @@
+import { Howl } from "howler";
 import Bullet from "../model/bullet";
 import Coin from "../model/coin";
 import Enemy from "../model/enemy";
 import GameActions from "../model/gameActions.enum";
 import Rocket from "../model/rocket";
 
-export const OVERHEAD_LIMIT = 10;
+export const OVERHEAD_LIMIT = 5;
+export const MAXIMUM_LIVES_POSSIBLE = 5;
+export const LIFE_PRICE = 5;
 
 export default class Action<T, P> {
-  constructor(public type: T, public payload: P) {}
+  constructor(public type: T, public payload?: P) {}
 }
 
 export interface GameReducerState {
@@ -22,6 +25,7 @@ export interface GameReducerState {
   coins: Coin[];
   candies: number;
   lives: number;
+  sound: Howl;
 }
 
 export function gameReducer(
@@ -35,20 +39,50 @@ export function gameReducer(
         rocket: {
           ...state.rocket,
           x: action.payload.x,
+          y: action.payload.y,
         },
       };
 
+    case GameActions.IncreaseRocketPower:
+      return {
+        ...state,
+        rocket:
+          state.candies > Coin.powerIncreasePrice
+            ? {
+                ...state.rocket,
+                power: state.rocket.power + 1,
+              }
+            : state.rocket,
+        candies:
+          state.candies > Coin.powerIncreasePrice
+            ? state.candies - Coin.powerIncreasePrice
+            : state.candies,
+      } as GameReducerState;
+
+    case GameActions.BuyLives:
+      if (state.candies >= LIFE_PRICE && state.lives < MAXIMUM_LIVES_POSSIBLE) {
+        return {
+          ...state,
+          candies: state.candies - LIFE_PRICE,
+          lives: state.lives + 1,
+        } as GameReducerState;
+      }
+      return state;
+
     case GameActions.Shoot: {
+      if (!state.isOverHead) {
+        state.sound.play();
+      }
       return {
         ...state,
         bullets: !state.isOverHead
           ? [
               ...state.bullets,
               new Bullet(
-                state.rocket.x + state.rocket.width / 2 - 5, // - half of bullet size
-                state.rocket.y,
-                20,
-                30
+                state.rocket.x +
+                  state.rocket.width / 2 -
+                  Bullet.bulletWidth / 2,
+                state.rocket.y
               ),
             ]
           : state.bullets,
@@ -79,6 +113,7 @@ export function gameReducer(
 
     case GameActions.MoveCoins:
       let overlappingCoins = 0;
+      let specialCandyCollision = false;
       return {
         ...state,
         coins: state.coins.length
@@ -100,11 +135,17 @@ export function gameReducer(
                 );
                 if (isOverlapping) {
                   overlappingCoins += 1;
+                  if (coin.isSpecial) {
+                    specialCandyCollision = true;
+                  }
                 }
                 return !isOverlapping;
               })
           : state.coins,
         candies: state.candies + overlappingCoins,
+        rocket: specialCandyCollision
+          ? { ...state.rocket, power: state.rocket.power + 1 }
+          : state.rocket,
       } as GameReducerState;
 
     case GameActions.MoveEnemyBullet: {
@@ -154,8 +195,18 @@ export function gameReducer(
             ) {
               overlappings = [...overlappings, enemy];
               overlappings = [...overlappings, bullet];
-              if (Math.random() <= Coin.coinDropProbability) {
-                newCoins = [...newCoins, new Coin(enemy.x, enemy.y, 20, 30)];
+
+              if (state.enemies.length === 1) {
+                const newCoin = new Coin(enemy.x, enemy.y);
+                newCoin.isSpecial = true;
+                newCoins = [...newCoins, newCoin];
+              } else {
+                if (
+                  Math.random() <= Coin.coinDropProbability &&
+                  enemy.lifePoints <= state.rocket.power
+                ) {
+                  newCoins = [...newCoins, new Coin(enemy.x, enemy.y)];
+                }
               }
             }
           }
@@ -180,7 +231,17 @@ export function gameReducer(
               : state.bullets,
           coins: newCoins,
           enemies: overlappings.length
-            ? state.enemies.filter((enemy) => !overlappings.includes(enemy))
+            ? state.enemies
+                .map((enemy) => {
+                  if (overlappings.includes(enemy)) {
+                    return {
+                      ...enemy,
+                      lifePoints: enemy.lifePoints - state.rocket.power,
+                    };
+                  }
+                  return enemy;
+                })
+                .filter((enemy) => enemy.lifePoints > 0)
             : [...state.enemies],
           score: state.score + Math.floor(overlappings.length / 2),
 

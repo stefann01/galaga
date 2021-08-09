@@ -7,6 +7,8 @@ enum GameActions {
   AddEnemyBullet,
   MoveCoins,
   AddEnemy,
+  BuyLives,
+  IncreaseRocketPower,
 }
 
 export default GameActions;

@@ -2,36 +2,24 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import App from "./App";
-import { GameProvider } from "./Context/gameProvider";
-import Enemy from "./model/enemy";
-import Rocket from "./model/rocket";
+// import { GameProvider } from "./Context/gameProvider";
+// import Enemy from "./model/enemy";
+// import Rocket from "./model/rocket";
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.css";
 
-function enemyGenerator() {
-  const enemies: Enemy[] = [];
-  let numberOfEnemies = 5;
-
-  for (let i = 1; i <= numberOfEnemies; ++i) {
-    for (let j = 1; j <= numberOfEnemies * 2; ++j) {
-      enemies.push(new Enemy(j * 200, i * 80, 50, 50));
-    }
-  }
-  return enemies;
-}
-
 ReactDOM.render(
   <React.StrictMode>
-    <GameProvider
+    {/* <GameProvider
       rocket={
         new Rocket(window.innerWidth / 2, window.innerHeight - 150, 1, 100, 150)
       }
       bullets={[]}
       enemies={enemyGenerator()}
-    >
-      <App />
-    </GameProvider>
+    > */}
+    <App />
+    {/* </GameProvider> */}
   </React.StrictMode>,
   document.getElementById("root")
 );

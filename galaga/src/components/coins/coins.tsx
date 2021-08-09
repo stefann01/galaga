@@ -1,18 +1,21 @@
 import React, { useEffect } from "react";
 
-import { useGameContext } from "../../Context/gameProvider";
+import Action from "../../Context/gameReducer";
+import Coin from "../../model/coin";
 import GameActions from "../../model/gameActions.enum";
 import styles from "./coins.module.scss";
 
-export default function Coins() {
-  const { coins, dispatch } = useGameContext();
-
+interface CoinsProps {
+  coins: Coin[];
+  dispatch: React.Dispatch<Action<GameActions, any>>;
+}
+function Coins({ coins, dispatch }: CoinsProps) {
   useEffect(() => {
     const interval = setInterval(() => {
       if (coins.length) {
         dispatch({ type: GameActions.MoveCoins });
       }
-    }, 20);
+    }, 10);
 
     return () => clearInterval(interval);
   }, [coins.length, dispatch]);
@@ -22,7 +25,7 @@ export default function Coins() {
       {coins.map((coin, index) => (
         <div
           key={index}
-          className={styles.coin}
+          className={coin.isSpecial ? styles.specialCoin : styles.coin}
           style={{
             left: coin.x,
             top: coin.y,
@@ -34,3 +37,5 @@ export default function Coins() {
     </>
   );
 }
+
+export default React.memo(Coins);
