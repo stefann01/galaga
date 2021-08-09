@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/galaga/static/css/main.dfe84354.chunk.css",
+    "main.js": "/galaga/static/js/main.b13e1258.chunk.js",
+    "main.js.map": "/galaga/static/js/main.b13e1258.chunk.js.map",
+    "runtime-main.js": "/galaga/static/js/runtime-main.3170fd08.js",
+    "runtime-main.js.map": "/galaga/static/js/runtime-main.3170fd08.js.map",
+    "static/js/2.1a852ee0.chunk.js": "/galaga/static/js/2.1a852ee0.chunk.js",
+    "static/js/2.1a852ee0.chunk.js.map": "/galaga/static/js/2.1a852ee0.chunk.js.map",
+    "static/js/3.9bdf602e.chunk.js": "/galaga/static/js/3.9bdf602e.chunk.js",
+    "static/js/3.9bdf602e.chunk.js.map": "/galaga/static/js/3.9bdf602e.chunk.js.map",
+    "index.html": "/galaga/index.html",
+    "static/css/main.dfe84354.chunk.css.map": "/galaga/static/css/main.dfe84354.chunk.css.map",
+    "static/js/2.1a852ee0.chunk.js.LICENSE.txt": "/galaga/static/js/2.1a852ee0.chunk.js.LICENSE.txt",
+    "static/media/EmptyLife.7fe8e7ba.svg": "/galaga/static/media/EmptyLife.7fe8e7ba.svg",
+    "static/media/enemyBullets.module.scss": "/galaga/static/media/EnemyBullet.fa34dbb7.svg",
+    "static/media/FullLife.058e894c.svg": "/galaga/static/media/FullLife.058e894c.svg",
+    "static/media/Monstrulet2.2.d6c4b34b.svg": "/galaga/static/media/Monstrulet2.2.d6c4b34b.svg",
+    "static/media/bullets.module.scss": "/galaga/static/media/PinkBullet2.ba881afc.svg",
+    "static/media/rocket.module.scss": "/galaga/static/media/RocketUnircornGame.e8c5c7e1.svg",
+    "static/media/App.module.scss": "/galaga/static/media/background.64c3d1e8.png",
+    "static/media/backgroundv2.52fdbc2d.mp4": "/galaga/static/media/backgroundv2.52fdbc2d.mp4",
+    "static/media/coins.module.scss": "/galaga/static/media/candy.5f2935f2.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3170fd08.js",
+    "static/js/2.1a852ee0.chunk.js",
+    "static/css/main.dfe84354.chunk.css",
+    "static/js/main.b13e1258.chunk.js"
+  ]
+}
