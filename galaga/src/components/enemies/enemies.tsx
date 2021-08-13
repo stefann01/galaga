@@ -1,16 +1,29 @@
-import React from "react";
-
 import Alien from "../../assets/icons/Monstrulet2.2.svg";
+import Action from "../../Context/gameReducer";
 import Enemy from "../../model/enemy";
+import GameActions from "../../model/gameActions.enum";
 import styles from "./enemies.module.scss";
+import React, { useEffect } from "react";
 
 interface EnemiesProps {
   enemies: Enemy[];
+  dispatch: React.Dispatch<Action<GameActions, any>>;
 }
 
 const Enemies = React.memo(
-  ({ enemies }: EnemiesProps) => {
+  ({ enemies, dispatch }: EnemiesProps) => {
     console.log("Enemies render");
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        if (enemies.length) {
+          dispatch({ type: GameActions.MoveEnemies });
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }, [enemies.length, dispatch]);
+
     return (
       <>
         {enemies.map((enemy, index) => (

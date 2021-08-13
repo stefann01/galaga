@@ -7,6 +7,8 @@ import BulletsComponent from "./components/bullets/bullets";
 import Coins from "./components/coins/coins";
 import Enemies from "./components/enemies/enemies";
 import EnemyBullets from "./components/enemyBullets/enemyBullets";
+import GameMenu from "./components/gameMenu/gameMenu";
+import GameOver from "./components/gameOver/gameOver";
 import RocketComp from "./components/rocket";
 import Score from "./components/score/score";
 import {
@@ -124,7 +126,7 @@ function App() {
             />
             <RocketComp dispatch={dispatch} rocket={state.rocket} />
             <BulletsComponent bullets={state.bullets} dispatch={dispatch} />
-            <Enemies enemies={state.enemies} />
+            <Enemies enemies={state.enemies} dispatch={dispatch} />
             <EnemyBullets
               enemyBullets={state.enemyBullets}
               dispatch={dispatch}
@@ -135,29 +137,7 @@ function App() {
       )}
       {!play && (
         <>
-          {gameOver ? (
-            <h1>Game Over</h1>
-          ) : (
-            <div className={styles.menuContainer}>
-              <div className={styles.buttons}>
-                <button
-                  className={styles.PlayButton}
-                  onClick={() => {
-                    setPlay(true);
-                    setGameOver(false);
-                  }}
-                >
-                  <h2 className={styles.buttonsText}> Play Game </h2>
-                </button>
-
-                <br />
-
-                <button className={styles.HelpButton}>
-                  <h2 className={styles.buttonsText}> Help </h2>
-                </button>
-              </div>
-            </div>
-          )}
+          {gameOver ? <GameOver /> : <GameMenu onPlay={() => setPlay(true)} />}
         </>
       )}
     </>

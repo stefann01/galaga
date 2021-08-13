@@ -1,0 +1,73 @@
+.warningMessage {
+  text-align: center;
+  color: white;
+}
+
+.menuContainer {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../../assets//images//background.png");
+  position: relative;
+  overflow: hidden;
+}
+
+.playButton {
+  height: 60px;
+  width: fit-content;
+  background-color: #92cd41;
+  padding: 10px 20px 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: inset -4px -4px 0px 0px #4aa52e, inset 2px 2px 0px 0px white;
+  border: 4px solid black;
+}
+
+.playButton:hover {
+  background-color: #76c442;
+  box-shadow: inset -6px -6px 0px 0px #4aa52e, inset 3px 3px 0px 0px white;
+}
+
+.playButton:active {
+  box-shadow: inset 6px 6px 0px 0px #4aa52e;
+}
+
+.helpButton {
+  height: 60px;
+  width: fit-content;
+  background-color: #f7d51d;
+  padding: 10px 20px 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: inset -4px -4px 0px 0px #e59400, inset 2px 2px 0px 0px white;
+  border: 4px solid black;
+}
+
+.helpButton:hover {
+  background-color: #f2c409;
+  box-shadow: inset -6px -6px 0px 0px #e59400, inset 3px 3px 0px 0px white;
+}
+
+.helpButton:active {
+  box-shadow: inset 6px 6px 0px 0px #e59400;
+}
+
+.buttonsText {
+  font-family: "Press Start 2P", cursive;
+  margin: 0px;
+  color: #000d00;
+}
+
+.buttons {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

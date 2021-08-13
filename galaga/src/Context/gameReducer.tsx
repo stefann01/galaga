@@ -1,4 +1,5 @@
 import { Howl } from "howler";
+
 import Bullet from "../model/bullet";
 import Coin from "../model/coin";
 import Enemy from "../model/enemy";
@@ -42,6 +43,16 @@ export function gameReducer(
           y: action.payload.y,
         },
       };
+
+    case GameActions.MoveEnemies:
+      return {
+        ...state,
+        enemies: state.enemies
+          .map((enemy) => {
+            return { ...enemy, y: enemy.y + 10 };
+          })
+          .filter((enemy) => enemy.y < window.innerHeight),
+      } as GameReducerState;
 
     case GameActions.IncreaseRocketPower:
       return {
