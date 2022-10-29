@@ -31,8 +31,9 @@
 
 .text {
   margin: 0;
-  font-size: 30px;
+  font-size: 18px;
   color: white;
+  font-family: "Press Start 2P";
   margin-top: -6px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -40,6 +41,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  margin-block-start: 0;
 }
 
 .overheadContainer {
@@ -67,5 +69,6 @@
 .leftDisplayerItem {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
 }

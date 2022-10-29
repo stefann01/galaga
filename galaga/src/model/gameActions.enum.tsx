@@ -10,6 +10,8 @@ enum GameActions {
   BuyLives,
   IncreaseRocketPower,
   MoveEnemies,
+  NextLevel,
+  PlayAgain,
 }
 
 export default GameActions;

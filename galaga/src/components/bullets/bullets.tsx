@@ -10,8 +10,6 @@ interface BulletsProps {
   dispatch: React.Dispatch<Action<GameActions, any>>;
 }
 function BulletsComponent({ bullets, dispatch }: BulletsProps) {
-  // console.log("bullets render");
-
   useEffect(() => {
     const interval = setInterval(() => {
       if (bullets.length > 0) {

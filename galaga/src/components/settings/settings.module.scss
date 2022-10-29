@@ -1,0 +1,31 @@
+.settingsContainer {
+  width: 100%;
+  height: 100%;
+  background-color: #3a393e;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.settingsContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.title {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  color: white;
+  margin: 0;
+  margin-bottom: 8px;
+}
+
+.dropdownContainer {
+  width: 100%;
+  margin-top: 16px;
+}

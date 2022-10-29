@@ -4,15 +4,15 @@ import Action from "../../Context/gameReducer";
 import Bullet from "../../model/bullet";
 import Enemy from "../../model/enemy";
 import GameActions from "../../model/gameActions.enum";
+import { Theme } from "../../model/Theme";
 import styles from "./enemyBullets.module.scss";
 
 interface EnemyBulletsProps {
   dispatch: React.Dispatch<Action<GameActions, any>>;
   enemyBullets: Bullet[];
+  theme: Theme;
 }
-function EnemyBullets({ enemyBullets, dispatch }: EnemyBulletsProps) {
-  // console.log("enemy bullet render");
-
+function EnemyBullets({ enemyBullets, theme, dispatch }: EnemyBulletsProps) {
   useEffect(() => {
     const interval = setInterval(() => {
       if (Math.random() < Enemy.enemyShootProbability) {
@@ -45,6 +45,10 @@ function EnemyBullets({ enemyBullets, dispatch }: EnemyBulletsProps) {
               top: bullet.y,
               width: bullet.width,
               height: bullet.height,
+              backgroundSize: "cover",
+              backgroundImage: `url(${process.env.PUBLIC_URL}${
+                theme.enemies[theme.currentEnemy].bullet
+              })`,
             }}
           ></div>
         ))}

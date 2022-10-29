@@ -1,5 +1,14 @@
 import React from "react";
 
-export default function GameOver() {
-  return <h1>Game Over</h1>;
+interface GameOverProps {
+  onPlayAgain: () => void;
+}
+
+export default function GameOver({ onPlayAgain }: GameOverProps) {
+  return (
+    <>
+      <h1>Game Over</h1>
+      <button onClick={onPlayAgain}>PLay Again</button>
+    </>
+  );
 }

@@ -1,8 +1,7 @@
-import { Howl } from "howler";
-import { useEffect, useMemo, useReducer, useState } from "react";
+// import { Howl } from "howler";
+import { useEffect, useReducer, useState } from "react";
 
 import styles from "./App.module.scss";
-import BackgroundVideo from "./assets/videos/backgroundv2.mp4";
 import BulletsComponent from "./components/bullets/bullets";
 import Coins from "./components/coins/coins";
 import Enemies from "./components/enemies/enemies";
@@ -11,84 +10,54 @@ import GameMenu from "./components/gameMenu/gameMenu";
 import GameOver from "./components/gameOver/gameOver";
 import RocketComp from "./components/rocket";
 import Score from "./components/score/score";
+import Background from "./components/video/video";
+import { themeConfig } from "./config/themeConfig";
 import {
   gameReducer,
   GameReducerState,
   OVERHEAD_LIMIT,
 } from "./Context/gameReducer";
 import Coin from "./model/coin";
-import Enemy from "./model/enemy";
+import GameActions from "./model/gameActions.enum";
 import Rocket from "./model/rocket";
+import { Theme } from "./model/Theme";
+import EnemyGeneratorService from "./service/enemyGeneratorService";
 
-function getLine(
-  numberOfEnemies: number,
-  enemySize: number,
-  yOfLine: number,
-  marginDistanceWidth: number = 200
-) {
-  const enemies: Enemy[] = [];
-
-  const canvasLeftMargin = marginDistanceWidth;
-  const canvasRightMargin = window.innerWidth - marginDistanceWidth;
-  const canvasDistance = canvasRightMargin - canvasLeftMargin;
-  const spaceBetweenAliens = canvasDistance / (numberOfEnemies - 1);
-
-  let current = canvasLeftMargin;
-  for (let i = 0; i < numberOfEnemies; i++) {
-    enemies.push(
-      new Enemy(current - enemySize / 2, yOfLine, enemySize, enemySize)
-    );
-    current += spaceBetweenAliens;
-  }
-
-  return enemies;
-}
-
-function enemyGenerator() {
-  let enemies: Enemy[] = [];
-
-  const enemySize = (3 / 100) * window.innerWidth;
-
-  enemies = [
-    ...getLine(11, enemySize, 100, 200),
-    ...getLine(12, enemySize, 100 + enemySize + 20, 125),
-    ...getLine(11, enemySize, 100 + 2 * (enemySize + 20), 200),
-  ];
-
-  return enemies;
+export function getInitialState(theme: Theme): GameReducerState {
+  return {
+    level: 1,
+    rocket: new Rocket(
+      window.innerWidth / 2,
+      window.innerHeight - 200,
+      theme.rocket.width,
+      theme.rocket.height
+    ),
+    bullets: [],
+    enemyBullets: [],
+    enemies: EnemyGeneratorService.getLevelEnemies(
+      1,
+      theme.enemies[theme.currentEnemy].width,
+      theme.enemies[theme.currentEnemy].height
+    ),
+    pressedKeys: new Set<number>(),
+    score: 0,
+    isGameOver: false,
+    isGameWon: false,
+    isOverHead: false,
+    coins: new Array<Coin>(),
+    candies: 0,
+    lives: 5,
+    playerHasWon: false,
+    theme: theme,
+  };
 }
 
 function App() {
   const [play, setPlay] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const sound = useMemo(
-    () =>
-      new Howl({
-        src: "https://soundbible.com/mp3/Laser%20Blasts-SoundBible.com-108608437.mp3",
-        html5: true,
-        volume: 0.15,
-      }),
-    []
-  );
-  const [state, dispatch] = useReducer(gameReducer, {
-    rocket: new Rocket(
-      window.innerWidth / 2,
-      window.innerHeight - 150,
-      150,
-      200
-    ),
-    bullets: [],
-    enemyBullets: [],
-    enemies: enemyGenerator(),
-    pressedKeys: new Set<number>(),
-    score: 0,
-    isGameOver: false,
-    isOverHead: false,
-    coins: new Array<Coin>(),
-    candies: 0,
-    lives: 5,
-    sound: sound,
-  } as GameReducerState);
+  const [showSettings, setShowSettings] = useState(false);
+  const [theme, setTheme] = useState(themeConfig.minecraftTheme);
+  const [state, dispatch] = useReducer(gameReducer, getInitialState(theme));
 
   useEffect(() => {
     if (state.isGameOver) {
@@ -97,24 +66,16 @@ function App() {
     }
   }, [state.isGameOver]);
 
+  const playAgain = () => {
+    setGameOver(false);
+    setPlay(true);
+    dispatch({ type: GameActions.PlayAgain });
+  };
+
   return (
     <>
       {play && (
-        <div style={{ position: "relative" }}>
-          <video
-            autoPlay
-            muted
-            loop
-            style={{
-              position: "fixed",
-              right: "0",
-              bottom: "0",
-              minWidth: "100%",
-              maxWidth: "100%",
-            }}
-          >
-            <source src={BackgroundVideo} type="video/mp4" />
-          </video>
+        <Background imgUrl={state.theme.background}>
           <div className={styles.container}>
             <Score
               lives={state.lives}
@@ -123,21 +84,44 @@ function App() {
               overheadPercentage={(state.bullets.length / OVERHEAD_LIMIT) * 100}
               enemiesNumber={state.enemies.length}
               rocketPower={state.rocket.power}
+              theme={state.theme}
             />
-            <RocketComp dispatch={dispatch} rocket={state.rocket} />
+            <RocketComp
+              dispatch={dispatch}
+              rocket={state.rocket}
+              skin={state.theme.rocket.skin}
+            />
             <BulletsComponent bullets={state.bullets} dispatch={dispatch} />
-            <Enemies enemies={state.enemies} dispatch={dispatch} />
+            {state.isGameWon && <h1 style={{ color: "white" }}>Game Won</h1>}
+            <Enemies
+              enemies={state.enemies}
+              dispatch={dispatch}
+              theme={state.theme}
+            />
             <EnemyBullets
               enemyBullets={state.enemyBullets}
               dispatch={dispatch}
+              theme={state.theme}
             />
-            <Coins coins={state.coins} dispatch={dispatch} />
+            <Coins
+              coins={state.coins}
+              dispatch={dispatch}
+              skin={state.theme.coins.skin}
+            />
           </div>
-        </div>
+        </Background>
       )}
       {!play && (
         <>
-          {gameOver ? <GameOver /> : <GameMenu onPlay={() => setPlay(true)} />}
+          {gameOver ? (
+            <GameOver onPlayAgain={playAgain} />
+          ) : (
+            <GameMenu
+              onPlay={() => setPlay(true)}
+              onClickSettingsButton={setShowSettings}
+              showSettings={showSettings}
+            />
+          )}
         </>
       )}
     </>

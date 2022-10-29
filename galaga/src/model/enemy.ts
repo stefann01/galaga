@@ -6,7 +6,8 @@ class Enemy {
     public y: number,
     public width: number,
     public height: number,
-    public lifePoints: number = Enemy.defaultEnemyLife
+    public lifePoints: number = Enemy.defaultEnemyLife,
+    public maxLife: number = Enemy.defaultEnemyLife
   ) {}
 }
 

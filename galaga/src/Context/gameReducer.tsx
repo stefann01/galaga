@@ -1,10 +1,13 @@
-import { Howl } from "howler";
+// import { Howl } from "howler";
 
+import { getInitialState } from "../App";
 import Bullet from "../model/bullet";
 import Coin from "../model/coin";
 import Enemy from "../model/enemy";
 import GameActions from "../model/gameActions.enum";
 import Rocket from "../model/rocket";
+import { Theme } from "../model/Theme";
+import EnemyGeneratorService from "../service/enemyGeneratorService";
 
 export const OVERHEAD_LIMIT = 5;
 export const MAXIMUM_LIVES_POSSIBLE = 5;
@@ -15,6 +18,7 @@ export default class Action<T, P> {
 }
 
 export interface GameReducerState {
+  level: number;
   rocket: Rocket;
   bullets: Bullet[];
   enemyBullets: Bullet[];
@@ -22,19 +26,36 @@ export interface GameReducerState {
   enemies: Enemy[];
   score: number;
   isGameOver: boolean;
+  isGameWon: boolean;
   isOverHead: boolean;
   coins: Coin[];
   candies: number;
   lives: number;
-  sound: Howl;
+  playerHasWon: boolean;
+  theme: Theme;
 }
 
 export function gameReducer(
   state: GameReducerState,
   action: Action<GameActions, any>
 ) {
+  debugger;
   switch (action.type) {
+    case GameActions.PlayAgain:
+      return getInitialState(state.theme);
+
     case GameActions.Move:
+      const shipAndEnemiesCollided = state.enemies.some((enemy) => {
+        return doOverlap(
+          { x: state.rocket.x, y: state.rocket.y },
+          {
+            x: state.rocket.x + state.rocket.width,
+            y: state.rocket.y + state.rocket.height,
+          },
+          { x: enemy.x, y: enemy.y },
+          { x: enemy.x + enemy.width, y: enemy.y + enemy.height }
+        );
+      });
       return {
         ...state,
         rocket: {
@@ -42,16 +63,18 @@ export function gameReducer(
           x: action.payload.x,
           y: action.payload.y,
         },
+        isGameOver: false,
       };
 
     case GameActions.MoveEnemies:
       return {
         ...state,
-        enemies: state.enemies
-          .map((enemy) => {
-            return { ...enemy, y: enemy.y + 10 };
-          })
-          .filter((enemy) => enemy.y < window.innerHeight),
+        enemies: state.enemies.map((enemy) => {
+          if (enemy.y > window.innerHeight) {
+            return { ...enemy, y: 100 };
+          }
+          return { ...enemy, y: enemy.y + 10 };
+        }),
       } as GameReducerState;
 
     case GameActions.IncreaseRocketPower:
@@ -81,9 +104,9 @@ export function gameReducer(
       return state;
 
     case GameActions.Shoot: {
-      if (!state.isOverHead) {
-        state.sound.play();
-      }
+      // if (!state.isOverHead) {
+      //   state.sound.play();
+      // }
       return {
         ...state,
         bullets: !state.isOverHead
@@ -114,8 +137,8 @@ export function gameReducer(
             new Bullet(
               state.enemies[randomEnemyIndex].x,
               state.enemies[randomEnemyIndex].y,
-              20,
-              40
+              state.theme.enemies[state.theme.currentEnemy].bulletWidth,
+              state.theme.enemies[state.theme.currentEnemy].bulletHeight
             ),
           ],
         } as GameReducerState;
@@ -124,7 +147,6 @@ export function gameReducer(
 
     case GameActions.MoveCoins:
       let overlappingCoins = 0;
-      let specialCandyCollision = false;
       return {
         ...state,
         coins: state.coins.length
@@ -146,21 +168,15 @@ export function gameReducer(
                 );
                 if (isOverlapping) {
                   overlappingCoins += 1;
-                  if (coin.isSpecial) {
-                    specialCandyCollision = true;
-                  }
                 }
                 return !isOverlapping;
               })
           : state.coins,
         candies: state.candies + overlappingCoins,
-        rocket: specialCandyCollision
-          ? { ...state.rocket, power: state.rocket.power + 1 }
-          : state.rocket,
       } as GameReducerState;
 
     case GameActions.MoveEnemyBullet: {
-      const rocketIsHit = state.enemyBullets.find((bullet) =>
+      const bulletHittingRocket = state.enemyBullets.find((bullet) =>
         doOverlap(
           { x: bullet.x, y: bullet.y },
           { x: bullet.x + bullet.width, y: bullet.y + bullet.height },
@@ -176,17 +192,17 @@ export function gameReducer(
         enemyBullets: state.enemyBullets.length
           ? state.enemyBullets
               .map((bullet) => {
-                bullet.y += 1;
-                return { ...bullet };
+                return { ...bullet, y: bullet.y + 1 };
               })
               .filter((bullet) => bullet.y < window.innerHeight)
               .filter(
                 (bullet) =>
-                  !(bullet.x === rocketIsHit?.x && bullet.y === rocketIsHit?.y)
+                  bullet.x !== bulletHittingRocket?.x &&
+                  bullet.y !== bulletHittingRocket?.y
               )
           : state.enemyBullets,
         isGameOver: state.lives === 0,
-        lives: rocketIsHit ? state.lives - 1 : state.lives,
+        lives: bulletHittingRocket ? state.lives - 1 : state.lives,
       } as GameReducerState;
     }
 
@@ -207,17 +223,19 @@ export function gameReducer(
               overlappings = [...overlappings, enemy];
               overlappings = [...overlappings, bullet];
 
-              if (state.enemies.length === 1) {
-                const newCoin = new Coin(enemy.x, enemy.y);
-                newCoin.isSpecial = true;
-                newCoins = [...newCoins, newCoin];
-              } else {
-                if (
-                  Math.random() <= Coin.coinDropProbability &&
-                  enemy.lifePoints <= state.rocket.power
-                ) {
-                  newCoins = [...newCoins, new Coin(enemy.x, enemy.y)];
-                }
+              if (
+                Math.random() <= Coin.coinDropProbability &&
+                enemy.lifePoints <= state.rocket.power
+              ) {
+                newCoins = [
+                  ...newCoins,
+                  new Coin(
+                    enemy.x,
+                    enemy.y,
+                    state.theme.coins.width,
+                    state.theme.coins.height
+                  ),
+                ];
               }
             }
           }
@@ -262,19 +280,30 @@ export function gameReducer(
       return state;
     }
 
-    case GameActions.AddEnemy:
+    case GameActions.NextLevel: {
+      const nextEnemyIndex = state.theme.currentEnemy + 1;
+      const gameIsWon = nextEnemyIndex >= state.theme.enemies.length;
+
+      if (gameIsWon) {
+        return {
+          ...state,
+          isGameWon: true,
+        } as GameReducerState;
+      }
       return {
         ...state,
-        enemies: [
-          ...state.enemies,
-          new Enemy(
-            action.payload.x,
-            action.payload.y,
-            action.payload.width,
-            action.payload.height
-          ),
-        ],
+        level: state.level + 1,
+        theme: {
+          ...state.theme,
+          currentEnemy: nextEnemyIndex,
+        },
+        enemies: EnemyGeneratorService.getLevelEnemies(
+          state.level + 3,
+          state.theme.enemies[nextEnemyIndex].width,
+          state.theme.enemies[nextEnemyIndex].height
+        ),
       } as GameReducerState;
+    }
 
     default:
       return state;

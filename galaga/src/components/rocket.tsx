@@ -8,9 +8,10 @@ import styles from "./rocket.module.scss";
 interface RocketComponentProps {
   rocket: Rocket;
   dispatch: React.Dispatch<Action<GameActions, any>>;
+  skin: string;
 }
 const RocketComp = React.memo(
-  function RocketComponent({ rocket, dispatch }: RocketComponentProps) {
+  function RocketComponent({ rocket, dispatch, skin }: RocketComponentProps) {
     useEffect(() => {
       function setMousePosition(e) {
         dispatch({
@@ -60,6 +61,9 @@ const RocketComp = React.memo(
           top: rocket.y,
           width: rocket.width,
           height: rocket.height,
+          border: `1px solid red`,
+          background: `url(${process.env.PUBLIC_URL}${skin}) no-repeat`,
+          backgroundSize: "cover",
         }}
       ></div>
     );

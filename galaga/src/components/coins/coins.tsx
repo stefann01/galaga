@@ -8,14 +8,15 @@ import styles from "./coins.module.scss";
 interface CoinsProps {
   coins: Coin[];
   dispatch: React.Dispatch<Action<GameActions, any>>;
+  skin: string;
 }
-function Coins({ coins, dispatch }: CoinsProps) {
+function Coins({ coins, dispatch, skin }: CoinsProps) {
   useEffect(() => {
     const interval = setInterval(() => {
       if (coins.length) {
         dispatch({ type: GameActions.MoveCoins });
       }
-    }, 10);
+    }, 50);
 
     return () => clearInterval(interval);
   }, [coins.length, dispatch]);
@@ -25,12 +26,13 @@ function Coins({ coins, dispatch }: CoinsProps) {
       {coins.map((coin, index) => (
         <div
           key={index}
-          className={coin.isSpecial ? styles.specialCoin : styles.coin}
+          className={styles.coin}
           style={{
             left: coin.x,
             top: coin.y,
             width: coin.width,
             height: coin.height,
+            backgroundImage: `url(${process.env.PUBLIC_URL}${skin})`,
           }}
         ></div>
       ))}
