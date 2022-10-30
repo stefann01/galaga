@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/galaga/static/css/main.c2094172.chunk.css",
-    "main.js": "/galaga/static/js/main.8d7bf7b0.chunk.js",
-    "main.js.map": "/galaga/static/js/main.8d7bf7b0.chunk.js.map",
+    "main.js": "/galaga/static/js/main.ea0999c1.chunk.js",
+    "main.js.map": "/galaga/static/js/main.ea0999c1.chunk.js.map",
     "runtime-main.js": "/galaga/static/js/runtime-main.dea139e9.js",
     "runtime-main.js.map": "/galaga/static/js/runtime-main.dea139e9.js.map",
     "static/js/2.b96dc057.chunk.js": "/galaga/static/js/2.b96dc057.chunk.js",
@@ -21,6 +21,6 @@
     "static/js/runtime-main.dea139e9.js",
     "static/js/2.b96dc057.chunk.js",
     "static/css/main.c2094172.chunk.css",
-    "static/js/main.8d7bf7b0.chunk.js"
+    "static/js/main.ea0999c1.chunk.js"
   ]
 }
