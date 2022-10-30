@@ -192,7 +192,7 @@ export function gameReducer(
         enemyBullets: state.enemyBullets.length
           ? state.enemyBullets
               .map((bullet) => {
-                return { ...bullet, y: bullet.y + 1 };
+                return { ...bullet, y: bullet.y + 3 };
               })
               .filter((bullet) => bullet.y < window.innerHeight)
               .filter(
@@ -224,7 +224,9 @@ export function gameReducer(
               overlappings = [...overlappings, bullet];
 
               if (
-                Math.random() <= Coin.coinDropProbability &&
+                Math.random() <=
+                  state.theme.enemies[state.theme.currentEnemy]
+                    .coinDropProbability &&
                 enemy.lifePoints <= state.rocket.power
               ) {
                 newCoins = [
@@ -298,7 +300,7 @@ export function gameReducer(
           currentEnemy: nextEnemyIndex,
         },
         enemies: EnemyGeneratorService.getLevelEnemies(
-          state.level + 3,
+          state.theme.enemies[nextEnemyIndex].lifePoints,
           state.theme.enemies[nextEnemyIndex].width,
           state.theme.enemies[nextEnemyIndex].height
         ),

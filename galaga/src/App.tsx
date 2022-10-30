@@ -35,7 +35,7 @@ export function getInitialState(theme: Theme): GameReducerState {
     bullets: [],
     enemyBullets: [],
     enemies: EnemyGeneratorService.getLevelEnemies(
-      1,
+      theme.enemies[theme.currentEnemy].lifePoints,
       theme.enemies[theme.currentEnemy].width,
       theme.enemies[theme.currentEnemy].height
     ),

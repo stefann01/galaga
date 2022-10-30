@@ -8,6 +8,7 @@ class Coin {
     public y: number,
     public width: number = Coin.width,
     public height: number = Coin.height,
+    public coinDropProbability: number = Coin.coinDropProbability
   ) {}
 }
 

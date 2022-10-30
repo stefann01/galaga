@@ -11,13 +11,16 @@ interface BulletsProps {
 }
 function BulletsComponent({ bullets, dispatch }: BulletsProps) {
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (bullets.length > 0) {
+    let interval;
+    if (bullets.length > 0) {
+      setInterval(() => {
         dispatch({ type: GameActions.MoveBullets });
-      }
-    }, 5);
+      }, 5);
+    }
 
-    return () => clearInterval(interval);
+    if (interval) {
+      return () => clearInterval(interval);
+    }
   }, [bullets.length, dispatch]);
 
   return (

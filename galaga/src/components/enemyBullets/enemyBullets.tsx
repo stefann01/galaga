@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 
 import Action from "../../Context/gameReducer";
 import Bullet from "../../model/bullet";
-import Enemy from "../../model/enemy";
 import GameActions from "../../model/gameActions.enum";
 import { Theme } from "../../model/Theme";
 import styles from "./enemyBullets.module.scss";
@@ -15,13 +14,15 @@ interface EnemyBulletsProps {
 function EnemyBullets({ enemyBullets, theme, dispatch }: EnemyBulletsProps) {
   useEffect(() => {
     const interval = setInterval(() => {
-      if (Math.random() < Enemy.enemyShootProbability) {
+      if (
+        Math.random() < theme.enemies[theme.currentEnemy].shootingProbability
+      ) {
         dispatch({ type: GameActions.AddEnemyBullet });
       }
-    }, 500);
+    }, 100);
 
     return () => clearInterval(interval);
-  }, [dispatch]);
+  }, [dispatch, theme.currentEnemy, theme.enemies]);
 
   useEffect(() => {
     const interval = setInterval(() => {

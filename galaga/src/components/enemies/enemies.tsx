@@ -27,7 +27,7 @@ const Enemies = React.memo(
       if (enemies.length === 0) {
         setTimeout(() => {
           dispatch({ type: GameActions.NextLevel });
-        }, 1000);
+        }, 2000);
       }
     }, [enemies.length, dispatch]);
 
@@ -55,7 +55,7 @@ const Enemies = React.memo(
                     top: enemy.y - 10,
                     background: enemyLifeColor,
                     width: enemy.width,
-                    height: "10px",
+                    height: "5px",
                   }}
                 ></div>
               )}
