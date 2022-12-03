@@ -48,14 +48,12 @@ const Enemies = React.memo(
             <>
               {enemyLifePercent < 100 && (
                 <div
+                  className={styles.enemyLifeBar}
                   style={{
-                    position: "absolute",
-                    borderRadius: "100px",
                     left: enemy.x,
                     top: enemy.y - 10,
                     background: enemyLifeColor,
                     width: enemy.width,
-                    height: "5px",
                   }}
                 ></div>
               )}

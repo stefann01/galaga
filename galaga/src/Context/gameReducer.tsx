@@ -9,7 +9,7 @@ import Rocket from "../model/rocket";
 import { Theme } from "../model/Theme";
 import EnemyGeneratorService from "../service/enemyGeneratorService";
 
-export const OVERHEAD_LIMIT = 5;
+export const OVERHEAD_LIMIT = 3;
 export const MAXIMUM_LIVES_POSSIBLE = 5;
 export const LIFE_PRICE = 5;
 
@@ -45,17 +45,17 @@ export function gameReducer(
       return getInitialState(state.theme);
 
     case GameActions.Move:
-      const shipAndEnemiesCollided = state.enemies.some((enemy) => {
-        return doOverlap(
-          { x: state.rocket.x, y: state.rocket.y },
-          {
-            x: state.rocket.x + state.rocket.width,
-            y: state.rocket.y + state.rocket.height,
-          },
-          { x: enemy.x, y: enemy.y },
-          { x: enemy.x + enemy.width, y: enemy.y + enemy.height }
-        );
-      });
+      // const shipAndEnemiesCollided = state.enemies.some((enemy) => {
+      //   return doOverlap(
+      //     { x: state.rocket.x, y: state.rocket.y },
+      //     {
+      //       x: state.rocket.x + state.rocket.width,
+      //       y: state.rocket.y + state.rocket.height,
+      //     },
+      //     { x: enemy.x, y: enemy.y },
+      //     { x: enemy.x + enemy.width, y: enemy.y + enemy.height }
+      //   );
+      // });
       return {
         ...state,
         rocket: {
@@ -192,7 +192,7 @@ export function gameReducer(
         enemyBullets: state.enemyBullets.length
           ? state.enemyBullets
               .map((bullet) => {
-                return { ...bullet, y: bullet.y + 3 };
+                return { ...bullet, y: bullet.y + 1 };
               })
               .filter((bullet) => bullet.y < window.innerHeight)
               .filter(

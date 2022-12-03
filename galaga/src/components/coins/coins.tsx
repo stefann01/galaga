@@ -12,16 +12,11 @@ interface CoinsProps {
 }
 function Coins({ coins, dispatch, skin }: CoinsProps) {
   useEffect(() => {
-    let interval;
-    if (coins.length) {
-      interval = setInterval(() => {
-        dispatch({ type: GameActions.MoveCoins });
-      }, 50);
-    }
+    const interval = setInterval(() => {
+      dispatch({ type: GameActions.MoveCoins });
+    }, 50);
 
-    if (interval) {
-      return () => clearInterval(interval);
-    }
+    return () => clearInterval(interval);
   }, [coins.length, dispatch]);
 
   return (

@@ -19,7 +19,7 @@ function EnemyBullets({ enemyBullets, theme, dispatch }: EnemyBulletsProps) {
       ) {
         dispatch({ type: GameActions.AddEnemyBullet });
       }
-    }, 100);
+    }, 500);
 
     return () => clearInterval(interval);
   }, [dispatch, theme.currentEnemy, theme.enemies]);

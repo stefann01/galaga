@@ -26,14 +26,14 @@ export default function GameMenu({
           <h2 className={styles.buttonsText}> Play Game </h2>
         </button>
 
-        <br />
+        {/* <br />
 
         <button
           className={styles.helpButton}
           onClick={() => onClickSettingsButton(true)}
         >
           <h2 className={styles.buttonsText}> Settings </h2>
-        </button>
+        </button> */}
 
         <br />
 

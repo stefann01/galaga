@@ -61,7 +61,6 @@ const RocketComp = React.memo(
           top: rocket.y,
           width: rocket.width,
           height: rocket.height,
-          border: `1px solid red`,
           background: `url(${process.env.PUBLIC_URL}${skin}) no-repeat`,
           backgroundSize: "cover",
         }}
@@ -69,7 +68,10 @@ const RocketComp = React.memo(
     );
   },
   (prevProps, nextProps) => {
-    if (prevProps.rocket.x === nextProps.rocket.x) {
+    if (
+      prevProps.rocket.x === nextProps.rocket.x &&
+      prevProps.rocket.y === nextProps.rocket.y
+    ) {
       return true;
     }
     return false;

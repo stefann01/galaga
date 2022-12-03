@@ -1,4 +1,3 @@
-// import { Howl } from "howler";
 import { useEffect, useReducer, useState } from "react";
 
 import styles from "./App.module.scss";
@@ -56,7 +55,7 @@ function App() {
   const [play, setPlay] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [theme, setTheme] = useState(themeConfig.minecraftTheme);
+  const [theme] = useState(themeConfig.minecraftTheme);
   const [state, dispatch] = useReducer(gameReducer, getInitialState(theme));
 
   useEffect(() => {
