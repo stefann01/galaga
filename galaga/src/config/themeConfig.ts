@@ -21,7 +21,7 @@ export const themeConfig = {
         height: 36,
         bulletWidth: 20,
         bulletHeight: 20,
-        lifePoints: 5,
+        lifePoints: 1,
         shootingProbability: 0.1,
         coinDropProbability: 0.8,
       },

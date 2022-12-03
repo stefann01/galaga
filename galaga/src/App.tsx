@@ -7,6 +7,7 @@ import Enemies from "./components/enemies/enemies";
 import EnemyBullets from "./components/enemyBullets/enemyBullets";
 import GameMenu from "./components/gameMenu/gameMenu";
 import GameOver from "./components/gameOver/gameOver";
+import GameWon from "./components/gameWon/gameWon";
 import RocketComp from "./components/rocket";
 import Score from "./components/score/score";
 import Background from "./components/video/video";
@@ -55,6 +56,7 @@ function App() {
   const [play, setPlay] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
   const [theme] = useState(themeConfig.minecraftTheme);
   const [state, dispatch] = useReducer(gameReducer, getInitialState(theme));
 
@@ -70,6 +72,35 @@ function App() {
     setPlay(true);
     dispatch({ type: GameActions.PlayAgain });
   };
+
+  if (gameOver) {
+    return (
+      <GameOver
+        onPlayAgain={playAgain}
+        onHome={() => {
+          setPlay(false);
+          setGameOver(false);
+          setShowSettings(false);
+          setShowHelp(false);
+          dispatch({ type: GameActions.PlayAgain });
+        }}
+      />
+    );
+  }
+
+  if (state.isGameWon) {
+    return (
+      <GameWon
+        onHome={() => {
+          setPlay(false);
+          setGameOver(false);
+          setShowSettings(false);
+          setShowHelp(false);
+          dispatch({ type: GameActions.PlayAgain });
+        }}
+      />
+    );
+  }
 
   return (
     <>
@@ -91,7 +122,7 @@ function App() {
               skin={state.theme.rocket.skin}
             />
             <BulletsComponent bullets={state.bullets} dispatch={dispatch} />
-            {state.isGameWon && <h1 style={{ color: "white" }}>Game Won</h1>}
+
             <Enemies
               enemies={state.enemies}
               dispatch={dispatch}
@@ -110,19 +141,18 @@ function App() {
           </div>
         </Background>
       )}
-      {!play && (
-        <>
-          {gameOver ? (
-            <GameOver onPlayAgain={playAgain} />
-          ) : (
-            <GameMenu
-              onPlay={() => setPlay(true)}
-              onClickSettingsButton={setShowSettings}
-              showSettings={showSettings}
-            />
-          )}
-        </>
-      )}
+
+      <>
+        {!play && (
+          <GameMenu
+            onPlay={() => setPlay(true)}
+            onClickSettingsButton={setShowSettings}
+            onClickHelpButton={setShowHelp}
+            showHelp={showHelp}
+            showSettings={showSettings}
+          />
+        )}
+      </>
     </>
   );
 }
