@@ -10,6 +10,7 @@ interface RocketComponentProps {
   dispatch: React.Dispatch<Action<GameActions, any>>;
   skin: string;
 }
+
 const RocketComp = React.memo(
   function RocketComponent({ rocket, dispatch, skin }: RocketComponentProps) {
     useEffect(() => {

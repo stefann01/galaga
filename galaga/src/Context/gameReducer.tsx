@@ -39,7 +39,6 @@ export function gameReducer(
   state: GameReducerState,
   action: Action<GameActions, any>
 ) {
-  debugger;
   switch (action.type) {
     case GameActions.PlayAgain:
       return getInitialState(state.theme);
@@ -63,7 +62,7 @@ export function gameReducer(
           x: action.payload.x,
           y: action.payload.y,
         },
-        isGameOver: false,
+        isGameOver: shipAndEnemiesCollided,
       };
 
     case GameActions.MoveEnemies:
@@ -290,6 +289,10 @@ export function gameReducer(
         return {
           ...state,
           isGameWon: true,
+          bullets: [],
+          enemies: [],
+          enemyBullets: [],
+          coins: [],
         } as GameReducerState;
       }
       return {
