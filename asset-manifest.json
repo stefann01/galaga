@@ -1,26 +1,27 @@
 {
   "files": {
-    "main.css": "/galaga/static/css/main.c2094172.chunk.css",
-    "main.js": "/galaga/static/js/main.ea0999c1.chunk.js",
-    "main.js.map": "/galaga/static/js/main.ea0999c1.chunk.js.map",
-    "runtime-main.js": "/galaga/static/js/runtime-main.dea139e9.js",
-    "runtime-main.js.map": "/galaga/static/js/runtime-main.dea139e9.js.map",
-    "static/js/2.b96dc057.chunk.js": "/galaga/static/js/2.b96dc057.chunk.js",
-    "static/js/2.b96dc057.chunk.js.map": "/galaga/static/js/2.b96dc057.chunk.js.map",
-    "static/js/3.6809b149.chunk.js": "/galaga/static/js/3.6809b149.chunk.js",
-    "static/js/3.6809b149.chunk.js.map": "/galaga/static/js/3.6809b149.chunk.js.map",
+    "main.css": "/galaga/static/css/main.f8262b6f.chunk.css",
+    "main.js": "/galaga/static/js/main.a7eddd12.chunk.js",
+    "main.js.map": "/galaga/static/js/main.a7eddd12.chunk.js.map",
+    "runtime-main.js": "/galaga/static/js/runtime-main.1da8bfe9.js",
+    "runtime-main.js.map": "/galaga/static/js/runtime-main.1da8bfe9.js.map",
+    "static/js/2.66ce1e40.chunk.js": "/galaga/static/js/2.66ce1e40.chunk.js",
+    "static/js/2.66ce1e40.chunk.js.map": "/galaga/static/js/2.66ce1e40.chunk.js.map",
+    "static/js/3.d8fb3d6d.chunk.js": "/galaga/static/js/3.d8fb3d6d.chunk.js",
+    "static/js/3.d8fb3d6d.chunk.js.map": "/galaga/static/js/3.d8fb3d6d.chunk.js.map",
     "index.html": "/galaga/index.html",
-    "static/css/main.c2094172.chunk.css.map": "/galaga/static/css/main.c2094172.chunk.css.map",
-    "static/js/2.b96dc057.chunk.js.LICENSE.txt": "/galaga/static/js/2.b96dc057.chunk.js.LICENSE.txt",
+    "static/css/main.f8262b6f.chunk.css.map": "/galaga/static/css/main.f8262b6f.chunk.css.map",
+    "static/js/2.66ce1e40.chunk.js.LICENSE.txt": "/galaga/static/js/2.66ce1e40.chunk.js.LICENSE.txt",
     "static/media/bullets.module.scss": "/galaga/static/media/PinkBullet2.827f9607.webp",
     "static/media/arrow_down.dd291259.svg": "/galaga/static/media/arrow_down.dd291259.svg",
     "static/media/gameMenu.module.scss": "/galaga/static/media/background.64c3d1e8.png",
-    "static/media/coins.module.scss": "/galaga/static/media/candy.5f2935f2.svg"
+    "static/media/coins.module.scss": "/galaga/static/media/candy.5f2935f2.svg",
+    "static/media/prize.b6e318ac.png": "/galaga/static/media/prize.b6e318ac.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.dea139e9.js",
-    "static/js/2.b96dc057.chunk.js",
-    "static/css/main.c2094172.chunk.css",
-    "static/js/main.ea0999c1.chunk.js"
+    "static/js/runtime-main.1da8bfe9.js",
+    "static/js/2.66ce1e40.chunk.js",
+    "static/css/main.f8262b6f.chunk.css",
+    "static/js/main.a7eddd12.chunk.js"
   ]
 }
