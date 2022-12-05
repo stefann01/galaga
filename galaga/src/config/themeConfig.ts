@@ -23,7 +23,7 @@ export const themeConfig = {
         bulletHeight: 20,
         lifePoints: 1,
         shootingProbability: 0.1,
-        coinDropProbability: 0.8,
+        coinDropProbability: 0.5,
       },
       {
         skin: "/minecraftTheme/caveSpider.png",
@@ -34,7 +34,7 @@ export const themeConfig = {
         bulletHeight: 20,
         lifePoints: 10,
         shootingProbability: 0.3,
-        coinDropProbability: 0.7,
+        coinDropProbability: 0.5,
       },
       {
         skin: "/minecraftTheme/caveSpider.png",
@@ -45,7 +45,7 @@ export const themeConfig = {
         bulletHeight: 20,
         lifePoints: 10,
         shootingProbability: 0.3,
-        coinDropProbability: 0.7,
+        coinDropProbability: 0.5,
       },
       {
         skin: "/minecraftTheme/Skeleton.png",
@@ -56,7 +56,7 @@ export const themeConfig = {
         bulletHeight: 40,
         lifePoints: 20,
         shootingProbability: 0.5,
-        coinDropProbability: 0.7,
+        coinDropProbability: 0.5,
       },
       {
         skin: "/minecraftTheme/Enderman.png",

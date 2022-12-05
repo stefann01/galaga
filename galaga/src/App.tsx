@@ -55,8 +55,6 @@ export function getInitialState(theme: Theme): GameReducerState {
 function App() {
   const [play, setPlay] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const [showHelp, setShowHelp] = useState(false);
   const [theme] = useState(themeConfig.minecraftTheme);
   const [state, dispatch] = useReducer(gameReducer, getInitialState(theme));
 
@@ -80,8 +78,6 @@ function App() {
         onHome={() => {
           setPlay(false);
           setGameOver(false);
-          setShowSettings(false);
-          setShowHelp(false);
           dispatch({ type: GameActions.PlayAgain });
         }}
       />
@@ -94,8 +90,6 @@ function App() {
         onHome={() => {
           setPlay(false);
           setGameOver(false);
-          setShowSettings(false);
-          setShowHelp(false);
           dispatch({ type: GameActions.PlayAgain });
         }}
       />
@@ -142,17 +136,7 @@ function App() {
         </Background>
       )}
 
-      <>
-        {!play && (
-          <GameMenu
-            onPlay={() => setPlay(true)}
-            onClickSettingsButton={setShowSettings}
-            onClickHelpButton={setShowHelp}
-            showHelp={showHelp}
-            showSettings={showSettings}
-          />
-        )}
-      </>
+      <>{!play && <GameMenu onPlay={() => setPlay(true)} />}</>
     </>
   );
 }

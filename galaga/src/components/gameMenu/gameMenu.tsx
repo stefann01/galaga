@@ -1,25 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./gameMenu.module.scss";
 import Settings from "../settings/settings";
 import Help from "../help/help";
 
 interface GameMenuProps {
   onPlay: (play: boolean) => void;
-  onClickSettingsButton: CallableFunction;
-  showSettings: boolean;
-  onClickHelpButton: CallableFunction;
-  showHelp: boolean;
 }
-export default function GameMenu({
-  onPlay,
-  onClickSettingsButton,
-  onClickHelpButton,
-  showSettings,
-  showHelp,
-}: GameMenuProps) {
+export default function GameMenu({ onPlay }: GameMenuProps) {
+  const [showSettings, setShowSettings] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+
   return (
     <div className={styles.menuContainer}>
-      <h1 className={styles.warningMessage}>Work still in progress... ☕</h1>
+      <h1 className={styles.warningMessage}>
+        Work still in progress... 90% ☕
+      </h1>
       <div className={styles.buttons}>
         <button
           className={styles.playButton}
@@ -30,21 +25,21 @@ export default function GameMenu({
           <h2 className={styles.buttonsText}> Play Game </h2>
         </button>
 
-        {/* <br />
+        <br />
 
         <button
           className={styles.helpButton}
-          onClick={() => onClickSettingsButton(true)}
+          onClick={() => setShowSettings(true)}
         >
           <h2 className={styles.buttonsText}> Settings </h2>
-        </button> */}
+        </button>
 
         <br />
 
         <button
           className={styles.helpButton}
           onClick={() => {
-            onClickHelpButton(true);
+            setShowHelp(true);
           }}
         >
           <h2 className={styles.buttonsText}> How to play </h2>
@@ -54,13 +49,13 @@ export default function GameMenu({
         className={styles.modal}
         style={{ display: showSettings ? "block" : "none" }}
       >
-        <Settings onClose={() => onClickSettingsButton(false)} />
+        <Settings onClose={() => setShowSettings(false)} />
       </div>
       <div
         className={styles.modal}
         style={{ display: showHelp ? "block" : "none" }}
       >
-        <Help onClose={() => onClickHelpButton(false)} />
+        <Help onClose={() => setShowHelp(false)} />
       </div>
       {!showHelp && !showSettings ? (
         <footer className={styles.footer}>

@@ -44,17 +44,17 @@ export function gameReducer(
       return getInitialState(state.theme);
 
     case GameActions.Move:
-      // const shipAndEnemiesCollided = state.enemies.some((enemy) => {
-      //   return doOverlap(
-      //     { x: state.rocket.x, y: state.rocket.y },
-      //     {
-      //       x: state.rocket.x + state.rocket.width,
-      //       y: state.rocket.y + state.rocket.height,
-      //     },
-      //     { x: enemy.x, y: enemy.y },
-      //     { x: enemy.x + enemy.width, y: enemy.y + enemy.height }
-      //   );
-      // });
+      const shipAndEnemiesCollided = state.enemies.some((enemy) => {
+        return doOverlap(
+          { x: state.rocket.x, y: state.rocket.y },
+          {
+            x: state.rocket.x + state.rocket.width,
+            y: state.rocket.y + state.rocket.height,
+          },
+          { x: enemy.x, y: enemy.y },
+          { x: enemy.x + enemy.width, y: enemy.y + enemy.height }
+        );
+      });
       return {
         ...state,
         rocket: {
