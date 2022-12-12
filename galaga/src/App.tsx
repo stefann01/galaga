@@ -10,12 +10,13 @@ import GameOver from "./components/gameOver/gameOver";
 import GameWon from "./components/gameWon/gameWon";
 import RocketComp from "./components/rocket";
 import Score from "./components/score/score";
+import Unsupported from "./components/unsuppported/unsupported";
 import Background from "./components/video/video";
 import { themeConfig } from "./config/themeConfig";
 import {
-  gameReducer,
-  GameReducerState,
-  OVERHEAD_LIMIT,
+	gameReducer,
+	GameReducerState,
+	OVERHEAD_LIMIT,
 } from "./Context/gameReducer";
 import Coin from "./model/coin";
 import GameActions from "./model/gameActions.enum";
@@ -24,121 +25,147 @@ import { Theme } from "./model/Theme";
 import EnemyGeneratorService from "./service/enemyGeneratorService";
 
 export function getInitialState(theme: Theme): GameReducerState {
-  return {
-    level: 1,
-    rocket: new Rocket(
-      window.innerWidth / 2,
-      window.innerHeight - 200,
-      theme.rocket.width,
-      theme.rocket.height
-    ),
-    bullets: [],
-    enemyBullets: [],
-    enemies: EnemyGeneratorService.getLevelEnemies(
-      theme.enemies[theme.currentEnemy].lifePoints,
-      theme.enemies[theme.currentEnemy].width,
-      theme.enemies[theme.currentEnemy].height
-    ),
-    pressedKeys: new Set<number>(),
-    score: 0,
-    isGameOver: false,
-    isGameWon: false,
-    isOverHead: false,
-    coins: new Array<Coin>(),
-    candies: 0,
-    lives: 5,
-    playerHasWon: false,
-    theme: theme,
-  };
+	return {
+		level: 1,
+		rocket: new Rocket(
+			window.innerWidth / 2,
+			window.innerHeight - 200,
+			theme.rocket.width,
+			theme.rocket.height
+		),
+		bullets: [],
+		enemyBullets: [],
+		enemies: EnemyGeneratorService.getLevelEnemies(
+			theme.enemies[theme.currentEnemy].lifePoints,
+			theme.enemies[theme.currentEnemy].width,
+			theme.enemies[theme.currentEnemy].height
+		),
+		pressedKeys: new Set<number>(),
+		score: 0,
+		isGameOver: false,
+		isGameWon: false,
+		isOverHead: false,
+		coins: new Array<Coin>(),
+		candies: 0,
+		lives: 5,
+		playerHasWon: false,
+		theme: theme,
+	};
 }
 
 function App() {
-  const [play, setPlay] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
-  const [theme] = useState(themeConfig.minecraftTheme);
-  const [state, dispatch] = useReducer(gameReducer, getInitialState(theme));
+	const [play, setPlay] = useState(false);
+	const [gameOver, setGameOver] = useState(false);
+	const [theme] = useState(themeConfig.minecraftTheme);
+	const [state, dispatch] = useReducer(gameReducer, getInitialState(theme));
 
-  useEffect(() => {
-    if (state.isGameOver) {
-      setGameOver(true);
-      setPlay(false);
-    }
-  }, [state.isGameOver]);
+	const [windowSize, setWindowsSize] = useState<number>(window.innerWidth);
 
-  const playAgain = () => {
-    setGameOver(false);
-    setPlay(true);
-    dispatch({ type: GameActions.PlayAgain });
-  };
+	useEffect(() => {
+		function updateWindowSize() {
+			setWindowsSize(window.innerWidth);
+		}
 
-  if (gameOver) {
-    return (
-      <GameOver
-        onPlayAgain={playAgain}
-        onHome={() => {
-          setPlay(false);
-          setGameOver(false);
-          dispatch({ type: GameActions.PlayAgain });
-        }}
-      />
-    );
-  }
+		window.addEventListener("resize", updateWindowSize);
 
-  if (state.isGameWon) {
-    return (
-      <GameWon
-        onHome={() => {
-          setPlay(false);
-          setGameOver(false);
-          dispatch({ type: GameActions.PlayAgain });
-        }}
-      />
-    );
-  }
+		return () => {
+			window.removeEventListener("resize", updateWindowSize);
+		};
+	}, []);
 
-  return (
-    <>
-      {play && (
-        <Background imgUrl={state.theme.background}>
-          <div className={styles.container}>
-            <Score
-              lives={state.lives}
-              score={state.score}
-              candies={state.candies}
-              overheadPercentage={(state.bullets.length / OVERHEAD_LIMIT) * 100}
-              enemiesNumber={state.enemies.length}
-              rocketPower={state.rocket.power}
-              theme={state.theme}
-            />
-            <RocketComp
-              dispatch={dispatch}
-              rocket={state.rocket}
-              skin={state.theme.rocket.skin}
-            />
-            <BulletsComponent bullets={state.bullets} dispatch={dispatch} />
+	useEffect(() => {
+		if (state.isGameOver) {
+			setGameOver(true);
+			setPlay(false);
+		}
+	}, [state.isGameOver]);
 
-            <Enemies
-              enemies={state.enemies}
-              dispatch={dispatch}
-              theme={state.theme}
-            />
-            <EnemyBullets
-              enemyBullets={state.enemyBullets}
-              dispatch={dispatch}
-              theme={state.theme}
-            />
-            <Coins
-              coins={state.coins}
-              dispatch={dispatch}
-              skin={state.theme.coins.skin}
-            />
-          </div>
-        </Background>
-      )}
+	const playAgain = () => {
+		setGameOver(false);
+		setPlay(true);
+		dispatch({ type: GameActions.PlayAgain });
+	};
 
-      <>{!play && <GameMenu onPlay={() => setPlay(true)} />}</>
-    </>
-  );
+	if (gameOver) {
+		return (
+			<GameOver
+				onPlayAgain={playAgain}
+				onHome={() => {
+					setPlay(false);
+					setGameOver(false);
+					dispatch({ type: GameActions.PlayAgain });
+				}}
+			/>
+		);
+	}
+
+	if (state.isGameWon) {
+		return (
+			<GameWon
+				onHome={() => {
+					setPlay(false);
+					setGameOver(false);
+					dispatch({ type: GameActions.PlayAgain });
+				}}
+			/>
+		);
+	}
+
+	return (
+		<>
+			{windowSize < 1024 ? (
+				<>
+					<Unsupported />
+				</>
+			) : (
+				<>
+					{play && (
+						<Background imgUrl={state.theme.background}>
+							<div className={styles.container}>
+								<Score
+									lives={state.lives}
+									score={state.score}
+									candies={state.candies}
+									overheadPercentage={
+										(state.bullets.length / OVERHEAD_LIMIT) * 100
+									}
+									enemiesNumber={state.enemies.length}
+									rocketPower={state.rocket.power}
+									theme={state.theme}
+								/>
+								<RocketComp
+									dispatch={dispatch}
+									rocket={state.rocket}
+									skin={state.theme.rocket.skin}
+								/>
+								<BulletsComponent
+									bullets={state.bullets}
+									dispatch={dispatch}
+								/>
+
+								<Enemies
+									enemies={state.enemies}
+									dispatch={dispatch}
+									theme={state.theme}
+								/>
+								<EnemyBullets
+									enemyBullets={state.enemyBullets}
+									dispatch={dispatch}
+									theme={state.theme}
+								/>
+								<Coins
+									coins={state.coins}
+									dispatch={dispatch}
+									skin={state.theme.coins.skin}
+								/>
+							</div>
+						</Background>
+					)}
+					<>{!play && <GameMenu onPlay={() => setPlay(true)} />}</>
+				</>
+			)}
+		</>
+	);
 }
 
 export default App;
