@@ -62,7 +62,7 @@ const RocketComp = React.memo(
           top: rocket.y,
           width: rocket.width,
           height: rocket.height,
-          background: `url(${process.env.PUBLIC_URL}${skin}) no-repeat`,
+          background: `url(${skin}) no-repeat`,
           backgroundSize: "cover",
         }}
       ></div>

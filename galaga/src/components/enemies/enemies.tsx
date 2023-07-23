@@ -67,9 +67,7 @@ const Enemies = React.memo(
                   width: enemy.width,
                   height: enemy.height,
                 }}
-                src={`${process.env.PUBLIC_URL}${
-                  theme.enemies[theme.currentEnemy].skin
-                }`}
+                src={`${theme.enemies[theme.currentEnemy].skin}`}
               />
             </>
           );

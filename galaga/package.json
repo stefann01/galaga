@@ -18,18 +18,16 @@
     "react-dom": "^17.0.2",
     "react-howler": "^5.2.0",
     "react-intl": "^5.20.12",
-    "react-scripts": "4.0.3",
     "sass": "^1.35.2",
     "typescript": "^4.3.5",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -50,7 +48,11 @@
     ]
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.3",
     "gh-pages": "^3.2.3",
-    "redux-devtools": "^3.7.0"
+    "redux-devtools": "^3.7.0",
+    "vite": "^4.4.6",
+    "vite-plugin-svgr": "^3.2.0",
+    "vite-tsconfig-paths": "^4.2.0"
   }
 }

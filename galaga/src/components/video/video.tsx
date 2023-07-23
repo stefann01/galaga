@@ -9,11 +9,7 @@ interface BackgroundProps {
 export default function Background({ imgUrl, children }: BackgroundProps) {
   return (
     <div className={styles.videoContainer}>
-      <img
-        src={process.env.PUBLIC_URL + imgUrl}
-        alt=""
-        className={styles.image}
-      />
+      <img src={imgUrl} alt="" className={styles.image} />
       {children}
     </div>
   );

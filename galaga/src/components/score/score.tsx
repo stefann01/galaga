@@ -29,24 +29,24 @@ const Score = React.memo(
     const powerImageData =
       powerPercent < 33
         ? {
-            skin: `${process.env.PUBLIC_URL}${theme.firePower.power33.skin}`,
+            skin: `${theme.firePower.power33.skin}`,
             width: theme.firePower.power33.width,
             height: theme.firePower.power33.height,
           }
         : powerPercent < 66
         ? {
-            skin: `${process.env.PUBLIC_URL}${theme.firePower.power66.skin}`,
+            skin: `${theme.firePower.power66.skin}`,
             width: theme.firePower.power66.width,
             height: theme.firePower.power66.height,
           }
         : powerPercent < 99
         ? {
-            skin: `${process.env.PUBLIC_URL}${theme.firePower.power99.skin}`,
+            skin: `${theme.firePower.power99.skin}`,
             width: theme.firePower.power99.width,
             height: theme.firePower.power99.height,
           }
         : {
-            skin: `${process.env.PUBLIC_URL}${theme.firePower.power100.skin}`,
+            skin: `${theme.firePower.power100.skin}`,
             width: theme.firePower.power100.width,
             height: theme.firePower.power100.height,
           };
@@ -55,7 +55,7 @@ const Score = React.memo(
         <div className={styles.leftDisplayer}>
           <div className={styles.leftDisplayerItem}>
             <img
-              src={`${process.env.PUBLIC_URL}${theme.coins.skin}`}
+              src={`${theme.coins.skin}`}
               alt="candy"
               width={`${theme.coins.width}`}
               height={`${theme.coins.height}`}
@@ -65,7 +65,7 @@ const Score = React.memo(
 
           <div className={styles.leftDisplayerItem}>
             <img
-              src={`${process.env.PUBLIC_URL}${theme.enemiesLeft.skin}`}
+              src={`${theme.enemiesLeft.skin}`}
               alt="enemies left"
               width={`${theme.enemiesLeft.width}`}
               height={`${theme.enemiesLeft.height}`}
@@ -94,7 +94,7 @@ const Score = React.memo(
             [...Array(5 - lives)].map((_, index) => {
               return (
                 <img
-                  src={`${process.env.PUBLIC_URL}${theme.death.skin}`}
+                  src={`${theme.death.skin}`}
                   alt={`life${index}`}
                   key={index}
                 />
@@ -103,7 +103,7 @@ const Score = React.memo(
           {[...Array(lives)].map((_, index) => {
             return (
               <img
-                src={`${process.env.PUBLIC_URL}${theme.life.skin}`}
+                src={`${theme.life.skin}`}
                 alt={`life${index}`}
                 key={(index + 1) ** 2}
               />

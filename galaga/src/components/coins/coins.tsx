@@ -30,7 +30,7 @@ function Coins({ coins, dispatch, skin }: CoinsProps) {
             top: coin.y,
             width: coin.width,
             height: coin.height,
-            backgroundImage: `url(${process.env.PUBLIC_URL}${skin})`,
+            backgroundImage: `url(${skin})`,
           }}
         ></div>
       ))}

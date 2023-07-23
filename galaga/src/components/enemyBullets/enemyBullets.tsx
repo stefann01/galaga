@@ -47,7 +47,7 @@ function EnemyBullets({ enemyBullets, theme, dispatch }: EnemyBulletsProps) {
               width: bullet.width,
               height: bullet.height,
               backgroundSize: "cover",
-              backgroundImage: `url(${process.env.PUBLIC_URL}${
+              backgroundImage: `url(${
                 theme.enemies[theme.currentEnemy].bullet
               })`,
             }}
