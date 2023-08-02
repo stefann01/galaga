@@ -8,15 +8,17 @@ import styles from "./bullets.module.scss";
 interface BulletsProps {
   bullets: Bullet[];
   dispatch: React.Dispatch<Action<GameActions, any>>;
+  paused: boolean;
 }
-function BulletsComponent({ bullets, dispatch }: BulletsProps) {
+function BulletsComponent({ bullets, dispatch, paused }: BulletsProps) {
   useEffect(() => {
+    if (paused) return;
     const interval = setInterval(() => {
       dispatch({ type: GameActions.MoveBullets });
     }, 5);
 
     return () => clearInterval(interval);
-  }, [bullets.length, dispatch]);
+  }, [bullets.length, dispatch, paused]);
 
   return (
     <>

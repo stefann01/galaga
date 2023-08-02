@@ -10,9 +10,16 @@ interface EnemyBulletsProps {
   dispatch: React.Dispatch<Action<GameActions, any>>;
   enemyBullets: Bullet[];
   theme: Theme;
+  paused: boolean;
 }
-function EnemyBullets({ enemyBullets, theme, dispatch }: EnemyBulletsProps) {
+function EnemyBullets({
+  enemyBullets,
+  theme,
+  dispatch,
+  paused,
+}: EnemyBulletsProps) {
   useEffect(() => {
+    if (paused) return;
     const interval = setInterval(() => {
       if (
         Math.random() < theme.enemies[theme.currentEnemy].shootingProbability
@@ -22,9 +29,10 @@ function EnemyBullets({ enemyBullets, theme, dispatch }: EnemyBulletsProps) {
     }, 500);
 
     return () => clearInterval(interval);
-  }, [dispatch, theme.currentEnemy, theme.enemies]);
+  }, [dispatch, theme.currentEnemy, theme.enemies, paused]);
 
   useEffect(() => {
+    if (paused) return;
     const interval = setInterval(() => {
       if (enemyBullets.length) {
         dispatch({ type: GameActions.MoveEnemyBullet });
@@ -32,7 +40,7 @@ function EnemyBullets({ enemyBullets, theme, dispatch }: EnemyBulletsProps) {
     }, 10);
 
     return () => clearInterval(interval);
-  }, [enemyBullets.length, dispatch]);
+  }, [enemyBullets.length, dispatch, paused]);
 
   return (
     <>

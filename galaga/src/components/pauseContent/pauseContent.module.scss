@@ -1,0 +1,25 @@
+@import "../../App.module.scss";
+
+.content {
+  width: 100%;
+  height: calc(100% - 60px);
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+}
+
+.row {
+  @include flexbox-center;
+  width: 100%;
+  margin-bottom: 20px;
+
+  p {
+    margin-right: 10px;
+  }
+}
+
+.buttons {
+  @include flexbox-center;
+  justify-content: space-evenly;
+  margin-top: auto;
+}

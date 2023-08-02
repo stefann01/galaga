@@ -88,6 +88,7 @@ const Score = React.memo(
           <OverHead width={382} overheadPercentage={overheadPercentage} />
         </div>
 
+        {/* TODO: Extract in separate component */}
         <div className={styles.rightDisplayer}>
           {lives < 5 &&
             lives > 0 &&

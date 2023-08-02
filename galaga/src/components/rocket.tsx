@@ -9,50 +9,29 @@ interface RocketComponentProps {
   rocket: Rocket;
   dispatch: React.Dispatch<Action<GameActions, any>>;
   skin: string;
+  paused: boolean;
 }
 
 const RocketComp = React.memo(
-  function RocketComponent({ rocket, dispatch, skin }: RocketComponentProps) {
+  function RocketComponent({
+    rocket,
+    dispatch,
+    skin,
+    paused,
+  }: RocketComponentProps) {
     useEffect(() => {
-      function setMousePosition(e) {
+      function setMousePosition(e: MouseEvent) {
+        if (paused) return;
         dispatch({
           type: GameActions.Move,
           payload: { x: e.clientX, y: e.clientY },
         });
       }
+
       window.addEventListener("mousemove", setMousePosition);
 
       return () => window.removeEventListener("mousemove", setMousePosition);
-    }, [dispatch]);
-
-    useEffect(() => {
-      const handleKeyDown = (e) => {
-        if (e.keyCode === 32) {
-          //space
-          dispatch({ type: GameActions.Shoot });
-        }
-        if (e.keyCode === 66) {
-          //b
-          dispatch({ type: GameActions.BuyLives });
-        }
-        if (e.keyCode === 70) {
-          //f
-          dispatch({ type: GameActions.IncreaseRocketPower });
-        }
-      };
-
-      const handleClick = () => {
-        dispatch({ type: GameActions.Shoot });
-      };
-
-      window.addEventListener("click", handleClick);
-      window.addEventListener("keyup", handleKeyDown);
-
-      return () => {
-        window.removeEventListener("click", handleKeyDown);
-        window.removeEventListener("keyup", handleClick);
-      };
-    }, [dispatch]);
+    }, [dispatch, paused]);
 
     return (
       <div
@@ -71,7 +50,8 @@ const RocketComp = React.memo(
   (prevProps, nextProps) => {
     if (
       prevProps.rocket.x === nextProps.rocket.x &&
-      prevProps.rocket.y === nextProps.rocket.y
+      prevProps.rocket.y === nextProps.rocket.y &&
+      prevProps.paused === nextProps.paused
     ) {
       return true;
     }

@@ -9,15 +9,17 @@ interface CoinsProps {
   coins: Coin[];
   dispatch: React.Dispatch<Action<GameActions, any>>;
   skin: string;
+  paused: boolean;
 }
-function Coins({ coins, dispatch, skin }: CoinsProps) {
+function Coins({ coins, dispatch, skin, paused }: CoinsProps) {
   useEffect(() => {
+    if (paused) return;
     const interval = setInterval(() => {
       dispatch({ type: GameActions.MoveCoins });
     }, 50);
 
     return () => clearInterval(interval);
-  }, [coins.length, dispatch]);
+  }, [coins.length, dispatch, paused]);
 
   return (
     <>

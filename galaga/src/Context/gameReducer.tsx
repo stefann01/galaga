@@ -33,6 +33,7 @@ export interface GameReducerState {
   lives: number;
   playerHasWon: boolean;
   theme: Theme;
+  isGamePaused: boolean;
 }
 
 export function gameReducer(
@@ -42,6 +43,12 @@ export function gameReducer(
   switch (action.type) {
     case GameActions.PlayAgain:
       return getInitialState(state.theme);
+
+    case GameActions.Pause:
+      return {
+        ...state,
+        isGamePaused: !state.isGamePaused,
+      } as GameReducerState;
 
     case GameActions.Move:
       const shipAndEnemiesCollided = state.enemies.some((enemy) => {
@@ -317,7 +324,12 @@ export function gameReducer(
 
 // Returns true if two rectangles
 // (l1, r1) and (l2, r2) overlap
-function doOverlap(l1, r1, l2, r2) {
+function doOverlap(
+  l1: { x: any; y: any },
+  r1: { x: any; y: any },
+  l2: { x: any; y: any },
+  r2: { x: any; y: any }
+) {
   // To check if either rectangle is actually a line
   // For example : l1 ={-1,0} r1={1,1} l2={0,-1} r2={0,1}
 

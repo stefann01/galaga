@@ -22,6 +22,9 @@ import GameActions from "./model/gameActions.enum";
 import Rocket from "./model/rocket";
 import { Theme } from "./model/Theme";
 import EnemyGeneratorService from "./service/enemyGeneratorService";
+import Modal from "./components/modal/modal";
+import useGameMenuKeys from "./hooks/useGameMenuKeys";
+import PauseContent from "./components/pauseContent/PauseContent";
 
 export function getInitialState(theme: Theme): GameReducerState {
   return {
@@ -49,6 +52,7 @@ export function getInitialState(theme: Theme): GameReducerState {
     lives: 5,
     playerHasWon: false,
     theme: theme,
+    isGamePaused: false,
   };
 }
 
@@ -57,6 +61,7 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
   const [theme] = useState(themeConfig.minecraftTheme);
   const [state, dispatch] = useReducer(gameReducer, getInitialState(theme));
+  useGameMenuKeys(dispatch, state.isGamePaused, true);
 
   useEffect(() => {
     if (state.isGameOver) {
@@ -100,6 +105,16 @@ function App() {
     <>
       {play && (
         <Background imgUrl={state.theme.background}>
+          <p
+            style={{
+              color: "white",
+              position: "absolute",
+              top: "30%",
+              left: "30%",
+            }}
+          >
+            {state.bullets.length}
+          </p>
           <div className={styles.container}>
             <Score
               lives={state.lives}
@@ -114,20 +129,28 @@ function App() {
               dispatch={dispatch}
               rocket={state.rocket}
               skin={state.theme.rocket.skin}
+              paused={state.isGamePaused}
             />
-            <BulletsComponent bullets={state.bullets} dispatch={dispatch} />
+            <BulletsComponent
+              bullets={state.bullets}
+              dispatch={dispatch}
+              paused={state.isGamePaused}
+            />
 
             <Enemies
               enemies={state.enemies}
               dispatch={dispatch}
               theme={state.theme}
+              paused={state.isGamePaused}
             />
             <EnemyBullets
               enemyBullets={state.enemyBullets}
               dispatch={dispatch}
               theme={state.theme}
+              paused={state.isGamePaused}
             />
             <Coins
+              paused={state.isGamePaused}
               coins={state.coins}
               dispatch={dispatch}
               skin={state.theme.coins.skin}
@@ -137,6 +160,32 @@ function App() {
       )}
 
       <>{!play && <GameMenu onPlay={() => setPlay(true)} />}</>
+
+      {state.isGamePaused && (
+        <Modal
+          isOpen={true}
+          onClose={() => dispatch({ type: GameActions.Pause })}
+          header="Game paused"
+          width="420px"
+          height="360px"
+        >
+          <PauseContent
+            coins={state.coins.length}
+            lives={state.lives}
+            gameMuted={false}
+            score={state.score}
+            theme="minecraft"
+            level={state.level}
+            onMute={() => {}}
+            onResume={() => dispatch({ type: GameActions.Pause })}
+            onQuit={() => {
+              setPlay(false);
+              setGameOver(false);
+              dispatch({ type: GameActions.PlayAgain });
+            }}
+          />
+        </Modal>
+      )}
     </>
   );
 }

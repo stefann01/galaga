@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./help.module.scss";
+import { Tag } from "../Tag/Tag";
 
 interface HelpProps {
   onClose: CallableFunction;
@@ -45,28 +46,35 @@ export default function Help({ onClose }: HelpProps) {
           can buy a life by pressing the B key, or you can increase your power
           by pressing the F key. <br />
           <br /> And that being said, good luck adventurer, in the great fight,
-          to win the GALAGA!{" "}
+          to win the GALAGA!
         </p>
+        <br />
         <div className={styles.controls}>
-          <div>
+          {/* TODO: Replace with display grid */}
+          <div className={styles.tagContainer}>
             <div>
-              <p>Mouse</p>
-              <p> - Movement</p>
+              <Tag title="Mouse" /> - Movement
             </div>
             <div>
-              <p>Space / Click</p>
-              <p> - Shooting</p>
+              <Tag title="Space / Click" /> - Shooting
             </div>
           </div>
 
-          <div>
+          <div className={styles.tagContainer}>
             <div>
-              <p>Key B</p>
-              <p> - Buy lives</p>
+              <Tag title="Key B" /> - Buy lives
             </div>
             <div>
-              <p>Key F</p>
-              <p> - Power Up</p>
+              <Tag title="Key F" /> - Power up
+            </div>
+          </div>
+
+          <div className={styles.tagContainer}>
+            <div>
+              <Tag title="Key P" /> - Pause
+            </div>
+            <div>
+              <Tag title="Key M" /> - Mute
             </div>
           </div>
         </div>

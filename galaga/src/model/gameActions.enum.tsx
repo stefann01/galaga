@@ -12,6 +12,7 @@ enum GameActions {
   MoveEnemies,
   NextLevel,
   PlayAgain,
+  Pause,
 }
 
 export default GameActions;

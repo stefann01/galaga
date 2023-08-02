@@ -9,11 +9,13 @@ interface EnemiesProps {
   enemies: Enemy[];
   theme: Theme;
   dispatch: React.Dispatch<Action<GameActions, any>>;
+  paused: boolean;
 }
 
 const Enemies = React.memo(
-  ({ theme, enemies, dispatch }: EnemiesProps) => {
+  ({ theme, enemies, dispatch, paused }: EnemiesProps) => {
     useEffect(() => {
+      if (paused) return;
       const interval = setInterval(() => {
         if (enemies.length) {
           dispatch({ type: GameActions.MoveEnemies });
@@ -21,15 +23,15 @@ const Enemies = React.memo(
       }, 1000);
 
       return () => clearInterval(interval);
-    }, [enemies.length, dispatch]);
+    }, [enemies.length, dispatch, paused]);
 
     useEffect(() => {
-      if (enemies.length === 0) {
+      if (enemies.length === 0 && !paused) {
         setTimeout(() => {
           dispatch({ type: GameActions.NextLevel });
         }, 2000);
       }
-    }, [enemies.length, dispatch]);
+    }, [enemies.length, dispatch, paused]);
 
     return (
       <>
@@ -77,7 +79,8 @@ const Enemies = React.memo(
   },
   (prevProps, nextProps) => {
     if (
-      JSON.stringify(prevProps.enemies) === JSON.stringify(nextProps.enemies)
+      JSON.stringify(prevProps.enemies) === JSON.stringify(nextProps.enemies) &&
+      prevProps.paused === nextProps.paused
     ) {
       return true;
     }
